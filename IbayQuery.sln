@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IbayQuery", "IbayQuery\IbayQuery.csproj", "{EE6D9A3D-2E18-466A-A331-7604F5BD3561}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dal", "Dal\Dal.csproj", "{0D05AEA1-9EEF-4737-BB5F-11C265ECAB66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IbayApi", "IbayApi\IbayApi.csproj", "{43D02271-CE3D-431C-B5E3-AB459D1E6D3A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EE6D9A3D-2E18-466A-A331-7604F5BD3561}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE6D9A3D-2E18-466A-A331-7604F5BD3561}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE6D9A3D-2E18-466A-A331-7604F5BD3561}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE6D9A3D-2E18-466A-A331-7604F5BD3561}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D05AEA1-9EEF-4737-BB5F-11C265ECAB66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D05AEA1-9EEF-4737-BB5F-11C265ECAB66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D05AEA1-9EEF-4737-BB5F-11C265ECAB66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D05AEA1-9EEF-4737-BB5F-11C265ECAB66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43D02271-CE3D-431C-B5E3-AB459D1E6D3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43D02271-CE3D-431C-B5E3-AB459D1E6D3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43D02271-CE3D-431C-B5E3-AB459D1E6D3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43D02271-CE3D-431C-B5E3-AB459D1E6D3A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CA3FC8D3-2E92-4E72-84C9-E8CDD197A820}
+	EndGlobalSection
+EndGlobal
