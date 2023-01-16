@@ -8,6 +8,7 @@ namespace Dal
 {
     public enum Role { 
         User,
+        Seller,
         Admin,
     }
 
