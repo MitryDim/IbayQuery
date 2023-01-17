@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace Dal
 {
     public enum Role { 
-        User,
-        Seller,
-        Admin,
+        User =0,
+        Seller = 1,
+        Admin = 2,
     }
 
     
