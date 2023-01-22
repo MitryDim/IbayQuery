@@ -1,4 +1,5 @@
-﻿using Dal;
+﻿using Azure.Core;
+using Dal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
@@ -10,7 +11,6 @@ namespace IbayApi.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IConfiguration _config;
 
         DatabaseContext _context;
 
@@ -56,6 +56,7 @@ namespace IbayApi.Controllers
         [HttpPost]
         public IActionResult PostProduct([FromForm] Products product)
         {
+
             if (product == null)
             {
                 return BadRequest();
