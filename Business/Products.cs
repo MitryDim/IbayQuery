@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Newtonsoft.Json;
 using System.Runtime.Serialization;
 
-namespace Dal
+namespace Business
 {
 
     public class Products

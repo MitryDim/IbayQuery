@@ -1,79 +1,67 @@
-﻿using Dal;
+﻿using BLL;
+using BLL.Data;
+using BLL.Models;
+using Dal;
+using Dal.Data;
+using Dal.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using Newtonsoft.Json;
 
 namespace IbayApi.Controllers
 {
 
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
-    {
-        private readonly IConfiguration _config;
+    public class UsersController : ControllerBase { 
 
-        DatabaseContext _context;
-        public UsersController(DatabaseContext context)
+        private BLL.Data.Users _BLL;
+
+        public UsersController(DatabaseContext context, IConfiguration config)
         {
 
-            _context = context;
-        }
-
-
-        public UsersController(IConfiguration config)
-        {
-            _config = config;
+            _BLL =  new BLL.Data.Users(context, config);
         }
 
         [AllowAnonymous]
-        [HttpPost]
-        public ActionResult Login([FromBody] Users userLogin)
+        [HttpPost("~/login")]
+        public ActionResult Login([FromBody] UsersModel users)
         {
-            var user = Authenticate(userLogin);
-            if (user != null)
+            
+            var userAuth = _BLL.Authenticate(users);
+            if (userAuth != null)
             {
-                var token = GenerateToken(user);
+                var token = _BLL.GenerateToken(userAuth);
                 return Ok(token);
             }
 
-            return NotFound("user not found");
+            return NotFound("Invalid informations");
         }
 
-        // To generate token
-        private string GenerateToken(Users user)
+        [AllowAnonymous]
+        [HttpPost("~/register")]
+        public ActionResult<UsersEntities> Register([FromBody] UsersModel user)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-            var claims = new[]
+            if (user == null)
             {
-                new Claim(ClaimTypes.NameIdentifier,user.Email),
-               // new Claim(ClaimTypes.Role,user.role.ToString())
-            };
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-                _config["Jwt:Audience"],
-                claims,
-                expires: DateTime.Now.AddMinutes(15),
-                signingCredentials: credentials);
-
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-
-        }
-
-        //To authenticate user
-        private Users Authenticate(Users userLogin)
-        {
-            var currentUser = _context.Users.FirstOrDefault(x => x.Email.ToLower() ==
-                userLogin.Email.ToLower() && x.Password == userLogin.Password);
-            if (currentUser != null)
-            {
-                return currentUser;
+                return BadRequest("");
             }
-            return null;
+
+            UsersEntities? userCreate = _BLL.Register(user);
+            if (userCreate == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(userCreate);
+        }
+
+        [HttpPut("~/update"), Authorize]
+        public ActionResult Update([FromForm] UsersModel users )
+        {
+
+
+            return BadRequest("test");
         }
     }
 }

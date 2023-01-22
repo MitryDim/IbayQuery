@@ -1,11 +1,11 @@
-﻿using Dal;
+﻿using Dal.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace IbayApi
+namespace Dal
 {
     public class DatabaseContext:DbContext
     {
-        public DbSet<Users> Users { get; set; }
+        public DbSet<UsersEntities> Users { get; set; }
         public DbSet<Products> Products { get; set; }
 
 
