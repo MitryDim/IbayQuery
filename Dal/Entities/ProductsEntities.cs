@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dal.Models
+namespace Dal.Entities
 {
-    public class Product
+    public class ProductsEntities
     {
         public int Id { get; set; }
 
@@ -21,7 +21,7 @@ namespace Dal.Models
         public DateTime Added_hour { get; set; }
 
 
-        public Product() { }
+        public ProductsEntities() { }
 
 
 

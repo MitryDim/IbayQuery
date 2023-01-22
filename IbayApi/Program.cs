@@ -22,19 +22,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { 
-        
-        Title = "IBay - Dimitri | Valentin", 
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+
+        Title = "IBay - Dimitri | Valentin",
         Version = "v1",
         Description = "An ASP.NET Core Web API for managing a Market between Users",
 
     });
-});
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Test01", Version = "v1" });
 
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
     {

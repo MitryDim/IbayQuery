@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using Dal;
+using Dal.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
@@ -12,12 +13,11 @@ namespace IbayApi.Controllers
     public class ProductsController : ControllerBase
     {
 
-        DatabaseContext _context;
+        private BLL.Data.Users _BLL;
 
-        public ProductsController(DatabaseContext context)
+        public ProductsController(DatabaseContext context, IConfiguration config)
         {
-
-            _context = context;
+            _BLL = new BLL.Data.Users(context, config);
 
         }
 
@@ -30,7 +30,7 @@ namespace IbayApi.Controllers
 
         // GET: Products
         [HttpGet]
-        public ActionResult<List<Products>> GetAll()
+        public ActionResult<List<ProductsEntities>> GetAll()
         {
 
             return Ok(_context.Products);
