@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using BLL.Models;
 using Dal;
 using Dal.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -13,48 +14,35 @@ namespace IbayApi.Controllers
     public class ProductsController : ControllerBase
     {
 
-        private BLL.Data.Users _BLL;
+        private BLL.Data.Products _BLL;
 
-        public ProductsController(DatabaseContext context, IConfiguration config)
+        public ProductsController(DatabaseContext context)
         {
-            _BLL = new BLL.Data.Users(context, config);
+            _BLL = new BLL.Data.Products(context);
 
         }
-
-        // Vérification => If product exist
-        private bool ProductExists(int id)
-        {
-            return _context.Products.Any(p => p.Id == id);
-        }
-
 
         // GET: Products
         [HttpGet]
         public ActionResult<List<ProductsEntities>> GetAll()
         {
 
-            return Ok(_context.Products);
+            return Ok(_BLL.GetAll());
 
         }
 
         // GET: Product by ID
         [HttpGet("{id}")]
-        public ActionResult<Products> GetProductById(int id)
+        public ActionResult<ProductsEntities> GetProductById(int id)
         {
 
-            var product = _context.Products.FindAsync(id);
-
-            if (product == null)
-            {
-                return NotFound();
-            }
-            return Ok(product);
+            return Ok(_BLL.GetProductById(id));
 
         }
 
         // POST: Product
         [HttpPost]
-        public IActionResult PostProduct([FromForm] Products product)
+        public IActionResult PostProduct([FromForm] ProductsModel product)
         {
 
             if (product == null)
@@ -62,79 +50,62 @@ namespace IbayApi.Controllers
                 return BadRequest();
             }
 
-            //get the file extension
-            var fileExtension = Path.GetExtension(product.Image.FileName);
-            //generate a new file name
-            var newFileName = Guid.NewGuid() + fileExtension;
-            //get the file path
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Public", "Images\\Products", newFileName);
-
-            //open the file stream
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                //copy the file to the server
-                product.Image.CopyTo(fileStream);
-            }
-            //save the other product's information
-            product.ImageURL = newFileName;
-            _context.Products.Add(product);
-            _context.SaveChanges();
-
+            var data = _BLL.Insert(product);
             // insertion de notre objet
-            return Created($"Products/{product.Id}", product);
+            return Created(data.Name, data);
         }
 
-        // PUT: Product/5
-        [HttpPut("{id}")]
-        public IActionResult PutProduct([FromQuery] int id, [FromBody] Products product)
-        {
-            if (id != product.Id)
-            {
-                return BadRequest();
-            }
+        //// PUT: Product/5
+        //[HttpPut("{id}")]
+        //public IActionResult PutProduct([FromQuery] int id, [FromBody] Products product)
+        //{
+        //    if (id != product.Id)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            _context.Entry(product).State = EntityState.Modified;
+        //    _context.Entry(product).State = EntityState.Modified;
 
-            try
-            {
-                _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!ProductExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
-        // DELETE: Product/5
-        [HttpDelete("{id}")]
-        public IActionResult DeleteProduct(int? id)
-        {
-            var product = _context.Products.Where(p => p.Id == id).FirstOrDefault();
+        //// DELETE: Product/5
+        //[HttpDelete("{id}")]
+        //public IActionResult DeleteProduct(int? id)
+        //{
+        //    var product = _context.Products.Where(p => p.Id == id).FirstOrDefault();
 
-            if (product == null)
-                return NotFound();
+        //    if (product == null)
+        //        return NotFound();
 
-            try
-            {
-                _context.Products.Remove(product);
-                _context.SaveChanges();
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest();
-            }
+        //    try
+        //    {
+        //        _context.Products.Remove(product);
+        //        _context.SaveChanges();
+        //        return NoContent();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest();
+        //    }
 
-        }
+        //}
     }
 
 }

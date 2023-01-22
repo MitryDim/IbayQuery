@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,9 +15,11 @@ namespace BLL.Models
 
         public string Name { get; set; }
 
-        public string Image { get; set; }
+        public IFormFile Image { get; set; }
 
-        public string Price { get; set; }
+        public string ImageURL { get; set; }
+
+        public decimal Price { get; set; }
 
         public Boolean Available { get; set; }
 
