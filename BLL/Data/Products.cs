@@ -61,14 +61,28 @@ namespace BLL.Data
                     break;
             }
 
-            return products.Take(limit).ToList();
+            try
+            {
+                return products.Take(limit).ToList();
+            }
+            catch(Exception ex) { 
+                throw new Exception(ex.Message);
+            }
+            
         }
 
         // GET: Products By ID
         public ProductsEntities GetProductById(int id)
         {
-
-            return _DAL.GetAll().FirstOrDefault(p => p.Id == id);
+            try
+            {
+                return _DAL.GetAll().FirstOrDefault(p => p.Id == id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            
         }
 
         // POST: Add product
@@ -93,16 +107,48 @@ namespace BLL.Data
             ////save the other product's information
             product.ImageURL = filePath;
 
-            var productMap = _ProductMapper.Map<ProductsEntities>(product); 
-            var data =_DAL.Insert(productMap);
 
-            return data;
+            try
+            {
+                var productMap = _ProductMapper.Map<ProductsEntities>(product);
+                return _DAL.Insert(productMap);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message); 
+            }
+
         }
 
         private bool CheckProductExists(int id)
         {
-            return _DAL.CheckProductExists(id);
+            try
+            {
+                return _DAL.CheckProductExists(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            
         }
+
+        public bool CheckProductOwner(int id, int OwnedId)
+        {
+
+            try
+            {
+                return _DAL.CheckProductOwner(id, OwnedId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
+
+
+
 
         // PUT : Update Product
 
@@ -124,8 +170,6 @@ namespace BLL.Data
                 throw new Exception("Erreur lors de l'update");
 
             }
-
-            throw new Exception("Pas de contenu");
         }
 
         // DELETE : Delete Product
@@ -147,8 +191,6 @@ namespace BLL.Data
                 throw new Exception("Erreur lors du Delete");
 
             }
-
-            throw new Exception("Pas de contenu");
         }
     }
 }

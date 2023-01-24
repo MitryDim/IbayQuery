@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -27,6 +28,11 @@ namespace BLL.Models
         public Boolean Available { get; set; }
 
         public DateTime Added_Hour { get; set; }
+
+        public int OwnedId { get; set; }
+
+        [ForeignKey("OwnedId")]
+        public virtual UsersModel User { get; set; }
 
 
 

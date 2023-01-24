@@ -54,6 +54,11 @@ namespace Dal.Data
            return _context.Products.Any(p => p.Id == id);
         }
 
+        public bool CheckProductOwner(int id, int OwnedId)
+        {
+            return _context.Products.Any(p => p.Id == id && p.OwnedId == OwnedId);
+        }
+
         // PUT : Product
         public ProductsEntities Update(ProductsEntities product)
         {
@@ -65,6 +70,7 @@ namespace Dal.Data
             }
             product.ImageURL = currentProduct.ImageURL;
             product.Added_Hour = currentProduct.Added_Hour;
+            product.OwnedId = currentProduct.OwnedId;
 
             _context.Entry(currentProduct).CurrentValues.SetValues(product);
             _context.SaveChangesAsync();

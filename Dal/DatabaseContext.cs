@@ -13,5 +13,13 @@ namespace Dal
         {
         }
 
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<ProductsEntities>()
+        //        .HasOne(p => p.User)
+        //        .WithMany()
+        //        .HasForeignKey(p => p.OwnerId);
+        //}
+
     }
 }

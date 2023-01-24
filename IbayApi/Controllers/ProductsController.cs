@@ -2,9 +2,14 @@
 using BLL.Models;
 using Dal;
 using Dal.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
+using System.Diagnostics;
+using System.Security.Claims;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace IbayApi.Controllers
 {
@@ -61,7 +66,10 @@ namespace IbayApi.Controllers
         /// </summary>
         // POST: Product
         [HttpPost]
+        [Authorize(Roles = "Seller")]
         [ProducesResponseType(typeof(ProductsModel), 201)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(403)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public IActionResult PostProduct([FromForm] ProductsInput product)
@@ -72,7 +80,10 @@ namespace IbayApi.Controllers
                 return BadRequest();
             }
 
-            var newProduct = new ProductsModel { Name = product.Name, Image = product.Image, Price = product.Price, Available = product.Available, Added_Hour = DateTime.UtcNow };
+            // get the owner id
+            var ownerId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var newProduct = new ProductsModel { Name = product.Name, Image = product.Image, Price = product.Price, Available = product.Available, Added_Hour = DateTime.UtcNow, OwnedId = int.Parse(ownerId) };
 
 
             var data = _BLL.Insert(newProduct);
@@ -85,7 +96,10 @@ namespace IbayApi.Controllers
         /// </summary>
         //// PUT: Product/5
         [HttpPut]
+        [Authorize(Roles = "Seller, Admin")]
         [ProducesResponseType(typeof(ProductsInput), 200)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(403)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public IActionResult PutProduct([FromQuery] int id, [FromForm] ProductsInput product)
@@ -93,6 +107,17 @@ namespace IbayApi.Controllers
             if (product == null)
             {
                 return BadRequest();
+            }
+
+            // get the owner id
+            var OwnedId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            // check if the product is owned by the currently logged in user
+            var currentProduct = _BLL.CheckProductOwner(id, int.Parse(OwnedId));
+
+            if (currentProduct == false)
+            {
+                return Unauthorized();
             }
 
             var newProduct = new ProductsModel { Id = id, Name = product.Name, Image = product.Image, Price = product.Price, Available = product.Available };
@@ -107,7 +132,10 @@ namespace IbayApi.Controllers
         /// </summary>
         // DELETE: Product/5
         [HttpDelete]
+        [Authorize(Roles = "Seller, Admin")]
         [ProducesResponseType(typeof(ProductsInput), 200)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(403)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public IActionResult DeleteProduct([FromQuery] int id)

@@ -27,6 +27,8 @@ namespace Dal.Entities
 
         public DateTime Added_Hour { get; set; }
 
+        public int OwnedId { get; set; }
+
 
     }
 }
