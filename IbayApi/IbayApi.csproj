@@ -53,4 +53,8 @@
     <Folder Include="Public\" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
 </Project>

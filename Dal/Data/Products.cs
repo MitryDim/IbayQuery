@@ -1,4 +1,5 @@
 ﻿using Dal.Entities;
+using Dal.Migrations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,8 +19,6 @@ namespace Dal.Data
 
     public class Products
     {
-
-
 
         DatabaseContext _context;
 
@@ -49,6 +48,47 @@ namespace Dal.Data
 
             return product;
                
+        }
+
+        public bool CheckProductExists(int id)
+        {
+           return _context.Products.Any(p => p.Id == id);
+        }
+
+        // PUT : Product
+        public ProductsEntities Update(ProductsEntities product)
+        {
+            var currentProduct = _context.Products.FirstOrDefault(p => p.Id == product.Id);
+
+            if (currentProduct == null)
+            {
+                throw new Exception("Null");
+            }
+            product.ImageURL = currentProduct.ImageURL;
+            product.Added_Hour = currentProduct.Added_Hour;
+
+            _context.Entry(currentProduct).CurrentValues.SetValues(product);
+            _context.SaveChangesAsync();
+
+            return product;
+
+        }
+
+        // DELETE : Product
+        public ProductsEntities Delete(int id)
+        {
+            var currentProduct = _context.Products.FirstOrDefault(p => p.Id == id);
+
+            if (currentProduct == null)
+            {
+                throw new Exception("Null");
+            }
+
+            _context.Products.Remove(currentProduct);
+            _context.SaveChanges();
+
+            return currentProduct;
+
         }
 
 

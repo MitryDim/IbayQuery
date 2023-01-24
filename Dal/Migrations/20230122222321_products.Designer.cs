@@ -4,6 +4,7 @@ using Dal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dal.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230122222321_products")]
+    partial class products
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,23 +33,16 @@ namespace Dal.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-<<<<<<< HEAD
-                    b.Property<DateTime>("Added_hour")
-=======
                     b.Property<DateTime>("Added_Hour")
->>>>>>> 98fad309b9801d88b0fc0f10431e1ceb5232459f
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("Available")
                         .HasColumnType("bit");
 
-<<<<<<< HEAD
-=======
                     b.Property<string>("ImageURL")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
->>>>>>> 98fad309b9801d88b0fc0f10431e1ceb5232459f
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

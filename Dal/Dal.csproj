@@ -27,6 +27,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.25.1" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.1" />
   </ItemGroup>
 

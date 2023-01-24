@@ -13,8 +13,5 @@ namespace Dal
         {
         }
 
-
-        
-
     }
 }
