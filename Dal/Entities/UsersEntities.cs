@@ -27,7 +27,8 @@ namespace Dal.Entities
 
         public string Pseudo { get; set; }
 
-
+        
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
 

@@ -80,8 +80,12 @@ namespace BLL.Data
             }
             return user;
 
+        }
 
-
+        public List<UsersModel> GetUsers()
+        {
+            var users = _UserMapper.Map<List<UsersModel>>(_DAL.GetAllUsers());
+            return users;
         }
 
         public UsersModel Update(UsersModel user) {

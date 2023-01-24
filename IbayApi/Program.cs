@@ -12,6 +12,8 @@ using BLL;
 using Swashbuckle.AspNetCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using Microsoft.AspNetCore.Builder;
+using Dal.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +31,7 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo
     {
 
-        Title = "IBay - Dimitri | Valentin",
+        Title = "IBay - Dimitry | Valentin",
         Version = "v1",
         Description = "An ASP.NET Core Web API for managing a Market between Users",
 
@@ -69,6 +71,8 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 
+
+
 //JWT Authentication
 builder.Services.AddAuthentication(x =>
 {
@@ -88,9 +92,10 @@ builder.Services.AddAuthentication(x =>
     };
 });
 
+
+
 //connection database ne pas oublier connexion string dans appsettings.json
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection")));
-
 
 
 

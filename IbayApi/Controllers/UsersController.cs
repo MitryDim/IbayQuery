@@ -25,21 +25,6 @@ namespace IbayApi.Controllers
             _BLL =  new BLL.Data.Users(context, config);
         }
 
-        [AllowAnonymous]
-        [HttpPost("~/login")]
-        public ActionResult Login([FromForm] UserInputLogin users)
-        {
-          
-           var userData = new UsersModel { Email= users.Email, Password = users.Password  };
-            var userAuth = _BLL.Authenticate(userData);
-            if (userAuth != null)
-            {
-                var token = _BLL.GenerateToken(userAuth);
-                return Ok(token);
-            }
-
-            return NotFound("Invalid informations");
-        }
 
         /// <summary>
         /// Register an user
@@ -48,7 +33,7 @@ namespace IbayApi.Controllers
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("~/register")]
-        public ActionResult<UsersModel> Register([FromBody] UserInput user)
+        public ActionResult<UsersModel> Register([FromForm] UserInputRegister user)
         {
             if (user == null)
             {
@@ -59,6 +44,7 @@ namespace IbayApi.Controllers
             usersModel.Pseudo = user.Pseudo;
             usersModel.Email = user.Email;
             usersModel.Password = user.Password;
+            usersModel.role = user.role;
 
 
 
@@ -72,20 +58,39 @@ namespace IbayApi.Controllers
         }
 
 
+        [AllowAnonymous]
+        [HttpPost("~/login")]
+        public ActionResult Login([FromForm] UserInputLogin users)
+        {
+
+            var userData = new UsersModel { Email = users.Email, Password = users.Password };
+            var userAuth = _BLL.Authenticate(userData);
+            if (userAuth != null)
+            {
+                var token = _BLL.GenerateToken(userAuth);
+                return Ok(token);
+            }
+
+            return NotFound("Invalid informations");
+        }
+
+        [HttpGet,Authorize(Roles = "Admin")]
+        public ActionResult<List<UsersModel>> GetUser()
+        {
+
+            return Ok(_BLL.GetUsers());
+
+        }
+
+
+
+
         [HttpPut("~/update"),Authorize]
         public ActionResult<UsersModel> Update([FromQuery] int id, [FromForm] UserInput users)
         {
 
             if (users == null)
                 return BadRequest();
-
-            //var currentUser = _BLL.GetUsersById(id);
-
-            //if (currentUser == null)
-            //    return  NotFound();
-
-          //  var claims = HttpContext.User.Claims;
-           // var email = claims.FirstOrDefault(c => c.Type == "Email").Value;
 
             int? userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
@@ -112,10 +117,23 @@ namespace IbayApi.Controllers
                 return Ok(user);
         }
 
-        [HttpDelete,Authorize]
+        [HttpDelete]
         public ActionResult<UsersModel> Delete([FromQuery] int id)
         {
             var user = new UsersModel();
+
+
+            int? userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            if (userId == null)
+                return StatusCode(500, "Error when reading id in token information !");
+
+            if (userId != id)
+            {
+                if (Role.Admin.ToString() != User.FindFirst(ClaimTypes.Role).Value)
+                    return Unauthorized("You don't have permissions to delete this person !");
+            }
+
             try
             {
                 user = _BLL.Delete(id);
