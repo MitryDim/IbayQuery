@@ -1,32 +1,25 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dal.Entities
+namespace Dal
 {
-    public class ProductsEntities
+    public class ProductsInput
     {
-        [Key]
-        public int Id { get; set; }
-
+        [Required]
         public string Name { get; set; }
-
-        [NotMapped]
+        [Required]
         public IFormFile Image { get; set; }
-
-        public string ImageURL { get; set; }
-
+        [Required]
         public decimal Price { get; set; }
-
+        [Required]
         public Boolean Available { get; set; }
-
-        public DateTime Added_Hour { get; set; }
 
 
     }
+
+
 }

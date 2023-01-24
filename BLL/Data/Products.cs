@@ -3,6 +3,7 @@ using BLL.Models;
 using Dal;
 using Dal.Data;
 using Dal.Entities;
+using Dal.Migrations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,9 +36,33 @@ namespace BLL.Data
 
 
         // GET: Products
-        public List<ProductsEntities> GetAll()
+        public List<ProductsEntities> GetAll(string sortBy, int limit, string query)
         {
-            return _DAL.GetAll();
+            var products = _DAL.GetAll();
+            products = products.Where(p => p.Name.ToLower().Contains(query.ToLower()) || p.Added_Hour.ToString("dd/MM/yyyy").Equals(query) || p.Price.ToString().TrimEnd('0', ',').Equals(query)).ToList();
+
+
+
+            switch (sortBy.ToLower())
+            {
+                case "name":
+                    products = products.OrderBy(p => p.Name).ToList();
+                    break;
+                case "available":
+                    products = products.OrderBy(p => p.Available).ToList();
+                    break;
+                case "price":
+                    products = products.OrderBy(p => p.Price).ToList();
+                    break;
+                case "date":
+                    products = products.OrderBy(p => p.Added_Hour).ToList();
+                    break;
+                default:
+                    products = products.OrderBy(p => p.Name).ToList();
+                    break;
+            }
+
+            return products.Take(limit).ToList();
         }
 
         // GET: Products By ID
@@ -66,7 +92,7 @@ namespace BLL.Data
             }
 
             ////save the other product's information
-            product.ImageURL = newFileName;
+            product.ImageURL = filePath;
 
             var productMap = _ProductMapper.Map<ProductsEntities>(product); 
             var data =_DAL.Insert(productMap);
@@ -74,9 +100,56 @@ namespace BLL.Data
             return data;
         }
 
+        private bool CheckProductExists(int id)
+        {
+            return _DAL.CheckProductExists(id);
+        }
 
+        // PUT : Update Product
 
+        public ProductsEntities Update(ProductsModel product)
+        {
+            var productExist = _DAL.CheckProductExists(product.Id);
 
+            if (productExist == false)
+            {
+                throw new Exception("Produit Introuvable");
+            }
 
+            try
+            {
+                return _DAL.Update(_ProductMapper.Map<ProductsEntities>(product));
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw new Exception("Erreur lors de l'update");
+
+            }
+
+            throw new Exception("Pas de contenu");
+        }
+
+        // DELETE : Delete Product
+        public ProductsEntities Delete(int id)
+        {
+            var productExist = _DAL.CheckProductExists(id);
+
+            if (productExist == false)
+            {
+                throw new Exception("Produit Introuvable");
+            }
+
+            try
+            {
+                return _DAL.Delete(id);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw new Exception("Erreur lors du Delete");
+
+            }
+
+            throw new Exception("Pas de contenu");
+        }
     }
 }

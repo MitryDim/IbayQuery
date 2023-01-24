@@ -9,30 +9,45 @@ using System.ComponentModel.DataAnnotations;
 namespace IbayApi.Controllers
 {
 
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
 
         private BLL.Data.Products _BLL;
+        private DatabaseContext _dbContext;
 
         public ProductsController(DatabaseContext context)
         {
             _BLL = new BLL.Data.Products(context);
+            _dbContext = context;
 
         }
 
+
+
+        /// <summary>
+        /// List all products available
+        /// </summary>
         // GET: Products
         [HttpGet]
-        public ActionResult<List<ProductsEntities>> GetAll()
+        [ProducesResponseType(typeof(ProductsEntities), 200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public ActionResult<List<ProductsEntities>> GetAll([FromQuery] string sortBy = "Name", int limit = 10, string query = "")
         {
-
-            return Ok(_BLL.GetAll());
-
+            return Ok(_BLL.GetAll(sortBy, limit , query));
         }
 
+        /// <summary>
+        /// Find an availabled product by Id
+        /// </summary>
         // GET: Product by ID
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ProductsEntities), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public ActionResult<ProductsEntities> GetProductById(int id)
         {
 
@@ -40,9 +55,16 @@ namespace IbayApi.Controllers
 
         }
 
+
+        /// <summary>
+        /// Add a product
+        /// </summary>
         // POST: Product
         [HttpPost]
-        public IActionResult PostProduct([FromForm] ProductsModel product)
+        [ProducesResponseType(typeof(ProductsModel), 201)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public IActionResult PostProduct([FromForm] ProductsInput product)
         {
 
             if (product == null)
@@ -50,62 +72,52 @@ namespace IbayApi.Controllers
                 return BadRequest();
             }
 
-            var data = _BLL.Insert(product);
+            var newProduct = new ProductsModel { Name = product.Name, Image = product.Image, Price = product.Price, Available = product.Available, Added_Hour = DateTime.UtcNow };
+
+
+            var data = _BLL.Insert(newProduct);
             // insertion de notre objet
             return Created(data.Name, data);
         }
 
+        /// <summary>
+        /// Update a product by his Id
+        /// </summary>
         //// PUT: Product/5
-        //[HttpPut("{id}")]
-        //public IActionResult PutProduct([FromQuery] int id, [FromBody] Products product)
-        //{
-        //    if (id != product.Id)
-        //    {
-        //        return BadRequest();
-        //    }
+        [HttpPut]
+        [ProducesResponseType(typeof(ProductsInput), 200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public IActionResult PutProduct([FromQuery] int id, [FromForm] ProductsInput product)
+        {
+            if (product == null)
+            {
+                return BadRequest();
+            }
 
-        //    _context.Entry(product).State = EntityState.Modified;
+            var newProduct = new ProductsModel { Id = id, Name = product.Name, Image = product.Image, Price = product.Price, Available = product.Available };
 
-        //    try
-        //    {
-        //        _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!ProductExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
+            var data = _BLL.Update(newProduct);
+            // update de notre objet
+            return Ok(data);
+        }
 
-        //    return NoContent();
-        //}
+        /// <summary>
+        /// Delete a product by his Id
+        /// </summary>
+        // DELETE: Product/5
+        [HttpDelete]
+        [ProducesResponseType(typeof(ProductsInput), 200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public IActionResult DeleteProduct([FromQuery] int id)
+        {
 
-        //// DELETE: Product/5
-        //[HttpDelete("{id}")]
-        //public IActionResult DeleteProduct(int? id)
-        //{
-        //    var product = _context.Products.Where(p => p.Id == id).FirstOrDefault();
+            var data = _BLL.Delete(id);
+            // delete de notre objet
+            return Ok(data);
 
-        //    if (product == null)
-        //        return NotFound();
-
-        //    try
-        //    {
-        //        _context.Products.Remove(product);
-        //        _context.SaveChanges();
-        //        return NoContent();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //}
+        }
     }
 
 }
