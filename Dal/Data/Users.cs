@@ -42,29 +42,44 @@ namespace Dal.Data
         }
 
 
-        public UsersEntities GetUserByEmail(string email)
+        public UsersEntities SearchUser(string email)
         {
             return _context.Users.Where(c => c.Email == email).FirstOrDefault();
         }
 
+        public UsersEntities SearchUser(int id)
+        {
+            return _context.Users.Where(c => c.Id == id).FirstOrDefault();
+        }
+
+
+
+
         public UsersEntities? Insert(UsersEntities user)
         {
-            try
+            
+            _context.Users.AddAsync(user);
+            _context.SaveChanges();
+            return user;
+          
+        }  
+        
+        public UsersEntities? Update(UsersEntities user)
+        {
+            var currentdata = _context.Users.Where(u => u.Id == user.Id).FirstOrDefault();
+           if (currentdata == null)
             {
-                _context.Users.AddAsync(user);
-                _context.SaveChanges();
-                return user;
-
-            }
-            catch (Exception ex)
-            {
-                return null;   
+                return currentdata;
             }
 
-
-
+            _context.Entry(currentdata).CurrentValues.SetValues(user);
+            _context.SaveChangesAsync();
+            return user;
         }
-      
 
+        public void Delete (UsersEntities user) {
+            _context.Remove(user);
+            _context.SaveChangesAsync();
+        }
     }
 }

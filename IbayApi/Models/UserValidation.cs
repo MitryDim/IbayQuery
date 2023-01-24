@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dal.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,24 +8,36 @@ using System.Threading.Tasks;
 
 namespace Dal
 {
-    public class UserValisation
+
+    public class UserInput
     {
-        //public Boolean EmailIsUse(String Email, DatabaseContext context)
-        //{
-        //    var _context = (DatabaseContext)validationContext.GetService(typeof(DatabaseContext));
-        //    var entity = _context.Users.SingleOrDefault(e => e.Email == value.ToString());
+        [Required]
+        public string Pseudo { get; set; }
 
-        //    if (entity != null)
-        //    {
-        //        return true;
-        //    }
-        //    return false ;
-        //}
+        [EmailAddress]
+        [Required]
+        public string Email { get; set; }
 
-        public string GetErrorMessage(string email)
-        {
-            return $"Email {email} is already in use.";
-        }
+        [Required]
+        [MinLength(10)]
+        public string Password { get; set; }
+
+        [Required]
+        public Role role { get; set; }
+
     }
+
+    public class UserInputLogin
+    {
+        [EmailAddress]
+        [Required]
+        public string Email { get; set; }
+
+        [Required]
+        [MinLength(10)]
+        public string Password { get; set; }
+
+    }
+
 
 }

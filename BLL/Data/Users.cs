@@ -13,6 +13,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using DevOne.Security.Cryptography.BCrypt;
 
 namespace BLL.Data
 {
@@ -38,25 +39,70 @@ namespace BLL.Data
         }
 
 
-        public UsersEntities? Register(UsersModel user)
+        public UsersModel? Register(UsersModel user)
         {
 
 
-            var userExist = _DAL.GetUserByEmail(user.Email);
+            var userExist = _DAL.SearchUser(user.Email);
 
             if (userExist != null)
             {
                 return null;
             }
-           var userMap =  _UserMapper.Map<UsersEntities>(user);
-            return _DAL.Insert(userMap);
+            user.Password = HashPassword(user.Password);
+            var userMap =  _UserMapper.Map<UsersEntities>(user);
+            return _UserMapper.Map<UsersModel>(_DAL.Insert(userMap));
 
             
+        }
+
+        public UsersModel GetUserByEmail(string email)
+        {
+            
+            var userSearch = _DAL.SearchUser(email);
+            var user = new UsersModel();
+            if (userSearch != null)
+            {
+                user = _UserMapper.Map<UsersModel>(userSearch);
+            }
+            return user;
+
+        }
+
+        public UsersModel GetUsersById(int id)
+        {
+
+            var userSearch = _DAL.SearchUser(id);
+            var user = new UsersModel();
+            if (userSearch != null)
+            {
+                user = _UserMapper.Map<UsersModel>(userSearch);
+            }
+            return user;
+
+
+
+        }
+
+        public UsersModel Update(UsersModel user) {
+           
+            var userUpdated = _DAL.Update(_UserMapper.Map<UsersEntities>(user));
+
+            if(userUpdated == null)
+            {
+                throw new Exception("Error when update user ! ");
+            }        
+          
+            return _UserMapper.Map< UsersModel>(userUpdated);
         }
 
 
         public string? Login(Models.UsersModel user)
         {
+
+
+           
+
             var userAuth = Authenticate(user);
             if (userAuth != null)
             {
@@ -74,7 +120,8 @@ namespace BLL.Data
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier,user.Email),
+                new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
+                new Claim(ClaimTypes.Email,user.Email),
                 new Claim(ClaimTypes.Role,user.role.ToString())
 
             };
@@ -92,8 +139,9 @@ namespace BLL.Data
         //To authenticate user
         public UsersEntities Authenticate(UsersModel userLogin)
         {
+
             var currentUser = _DAL.GetAllUsers().FirstOrDefault(x => x.Email.ToLower() ==
-                userLogin.Email.ToLower() && x.Password == userLogin.Password);
+                userLogin.Email.ToLower() && BCryptHelper.CheckPassword(userLogin.Password, x.Password));
 
             if (currentUser != null)
             {
@@ -101,6 +149,39 @@ namespace BLL.Data
                 return userModel;
             }
             return null;
+        }
+
+        public string HashPassword(string password)
+        {
+            // Generate a new salt
+            string salt = BCryptHelper.GenerateSalt(10);
+
+            // Hash the password with the salt
+            string hashedPassword = BCryptHelper.HashPassword(password, salt);
+
+            return hashedPassword;
+        }
+
+        public UsersModel Delete(int id)
+        {
+            var userDeleted = new UsersModel();
+            var userExist = _DAL.SearchUser(id);
+
+            if (userExist == null) {
+                return userDeleted;
+            }
+           try
+            {
+                _DAL.Delete(userExist);
+            }
+            catch
+            {
+                throw new Exception("Error when delete user");
+            }
+            
+            userDeleted = new UsersModel { Pseudo = userExist.Pseudo, Email = userExist.Pseudo };
+            return userDeleted;
+
         }
 
 
