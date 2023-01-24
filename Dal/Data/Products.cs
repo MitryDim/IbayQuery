@@ -1,5 +1,4 @@
 ﻿using Dal.Entities;
-using Dal.Migrations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

@@ -3,7 +3,6 @@ using BLL.Models;
 using Dal;
 using Dal.Data;
 using Dal.Entities;
-using Dal.Migrations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
