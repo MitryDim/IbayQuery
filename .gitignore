@@ -362,4 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-./IbayAPI/appsettings.json
+./IbayApi/appsettings.json
