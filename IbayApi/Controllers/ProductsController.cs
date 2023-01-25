@@ -19,12 +19,12 @@ namespace IbayApi.Controllers
     public class ProductsController : ControllerBase
     {
 
-        private BLL.Data.Products _BLL;
+        private BLL.Data.ProductsBLL _BLL;
         private DatabaseContext _dbContext;
 
         public ProductsController(DatabaseContext context)
         {
-            _BLL = new BLL.Data.Products(context);
+            _BLL = new BLL.Data.ProductsBLL(context);
             _dbContext = context;
 
         }
@@ -140,6 +140,15 @@ namespace IbayApi.Controllers
         [ProducesResponseType(500)]
         public IActionResult DeleteProduct([FromQuery] int id)
         {
+            // get the owner id
+            var OwnedId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            // check if the product is owned by the currently logged in user
+            var currentProduct = _BLL.CheckProductOwner(id, int.Parse(OwnedId));
+
+            if (currentProduct == false)
+            {
+                return Unauthorized();
+            }
 
             var data = _BLL.Delete(id);
             // delete de notre objet

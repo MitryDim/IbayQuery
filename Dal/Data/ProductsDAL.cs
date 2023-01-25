@@ -16,13 +16,13 @@ namespace Dal.Data
 {
 
 
-    public class Products
+    public class ProductsDAL
     {
 
         DatabaseContext _context;
 
 
-        public Products(DatabaseContext context)
+        public ProductsDAL(DatabaseContext context)
         {
 
             _context = context;

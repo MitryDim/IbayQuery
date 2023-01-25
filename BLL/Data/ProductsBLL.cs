@@ -18,17 +18,17 @@ using System.Threading.Tasks;
 
 namespace BLL.Data
 {
-    public class Products
+    public class ProductsBLL
     {
 
-        private Dal.Data.Products _DAL;
+        private Dal.Data.ProductsDAL _DAL;
 
         private Mapper _ProductMapper;
 
 
-        public Products(DatabaseContext context)
+        public ProductsBLL(DatabaseContext context)
         {
-            _DAL = new Dal.Data.Products(context);
+            _DAL = new Dal.Data.ProductsDAL(context);
             var _configProduct = new MapperConfiguration(cfg => cfg.CreateMap<ProductsEntities, ProductsModel>().ReverseMap());
             _ProductMapper = new Mapper(_configProduct);
         }
