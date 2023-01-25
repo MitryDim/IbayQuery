@@ -21,18 +21,13 @@ namespace BLL.Data
     {
 
         private Dal.Data.Users _DAL;
-
-
-
-        private readonly IConfiguration _config;
-
         private Mapper _UserMapper;
 
 
-        public Users(DatabaseContext context, IConfiguration config)
+        public Users(DatabaseContext context)
         {
-            _config = config;
-            _DAL = new Dal.Data.Users(context, config);
+
+            _DAL = new Dal.Data.Users(context);
             var _configUser = new MapperConfiguration(cfg => cfg.CreateMap<UsersEntities, UsersModel>().ReverseMap());
             _UserMapper = new Mapper(_configUser);
 
@@ -41,7 +36,6 @@ namespace BLL.Data
 
         public UsersModel? Register(UsersModel user)
         {
-
 
             var userExist = _DAL.SearchUser(user.Email);
 
@@ -101,7 +95,7 @@ namespace BLL.Data
         }
 
 
-        public string? Login(Models.UsersModel user)
+        public string? Login(Models.UsersModel user, IConfiguration config)
         {
 
 
@@ -110,7 +104,7 @@ namespace BLL.Data
             var userAuth = Authenticate(user);
             if (userAuth != null)
             {
-                var token = GenerateToken(userAuth);
+                var token = GenerateToken(userAuth,config);
                 return token;
             }
 
@@ -118,9 +112,9 @@ namespace BLL.Data
         }
 
         // To generate token
-        public string GenerateToken(UsersEntities user)
+        public string GenerateToken(UsersEntities user, IConfiguration config)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new[]
             {
@@ -129,8 +123,8 @@ namespace BLL.Data
                 new Claim(ClaimTypes.Role,user.role.ToString())
 
             };
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-                _config["Jwt:Audience"],
+            var token = new JwtSecurityToken(config["Jwt:Issuer"],
+                config["Jwt:Audience"],
                 claims,
                 expires: DateTime.UtcNow.AddMinutes(15),
                 signingCredentials: credentials);

@@ -37,6 +37,10 @@ namespace Dal.Data
             return _context.Products.ToList();
 
         }
+        public ProductsEntities SearchById(int Id)
+        {
+            return _context.Products.Where(p => p.Id == Id).FirstOrDefault();
+        }
 
         // POST: Product
         public ProductsEntities Insert(ProductsEntities product)

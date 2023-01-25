@@ -18,11 +18,13 @@ namespace IbayApi.Controllers
     public class UsersController : ControllerBase { 
 
         private BLL.Data.Users _BLL;
+        private IConfiguration _config;
 
         public UsersController(DatabaseContext context, IConfiguration config)
         {
 
-            _BLL =  new BLL.Data.Users(context, config);
+            _BLL =  new BLL.Data.Users(context);
+            _config = config;
         }
 
 
@@ -60,18 +62,15 @@ namespace IbayApi.Controllers
 
         [AllowAnonymous]
         [HttpPost("~/login")]
-        public ActionResult Login([FromForm] UserInputLogin users)
+        public ActionResult<string> Login([FromForm] UserInputLogin users)
         {
-
             var userData = new UsersModel { Email = users.Email, Password = users.Password };
-            var userAuth = _BLL.Authenticate(userData);
-            if (userAuth != null)
-            {
-                var token = _BLL.GenerateToken(userAuth);
-                return Ok(token);
-            }
 
-            return NotFound("Invalid informations");
+            var token = _BLL.Login(userData, _config);
+            if (string.IsNullOrEmpty(token))
+                return NotFound("Invalid informations");
+
+            return Ok(token);
         }
 
         [HttpGet,Authorize(Roles = "Admin")]

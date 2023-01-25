@@ -1,35 +1,15 @@
 ﻿using Dal.Entities;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Dal.Data
 {
-
-
-        public class Users
+    public class Users
     {
-
-        private readonly IConfiguration _config;
-
         DatabaseContext _context;
 
-
-        public  Users(DatabaseContext context, IConfiguration config)
+        public  Users(DatabaseContext context)
         {
-
             _context = context;
-            _config = config;
-
         }
 
         /// <summary>

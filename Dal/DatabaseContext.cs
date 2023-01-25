@@ -9,6 +9,7 @@ namespace Dal
         public DbSet<ProductsEntities> Products { get; set; }
         public DbSet<OrdersEntities> Orders { get; set; }
 
+        public DbSet<CartsEntities> Carts { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) 
         {
