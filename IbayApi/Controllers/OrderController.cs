@@ -14,12 +14,13 @@ namespace IbayApi.Controllers
     {
 
         private BLL.Data.OrdersBLL _BLL;
+        private CartsBLL _BLLCart;
         private DatabaseContext _dbContext;
 
         public OrdersController(DatabaseContext context)
         {
             _BLL = new BLL.Data.OrdersBLL(context);
-            _CartsBLL = new BLL.Data.CartsBLL(context);
+            _BLLCart = new BLL.Data.CartsBLL(context);
             _dbContext = context;
 
         }
@@ -44,9 +45,12 @@ namespace IbayApi.Controllers
             }
 
             // get the cart id with the id choice
-            var CartId = _CartsBLL.SearchById(order.CartId);
+            var CartId = _BLLCart.SearchById(order.CartId);
 
-            var newProduct = new OrdersModel { NumOrders = Guid.NewGuid(), CartId = CartId, Added_Hour = DateTime.UtcNow };
+            if (CartId == null)
+                return BadRequest();
+
+            var newProduct = new OrdersModel { NumOrders = Guid.NewGuid(), CartId = CartId.Id, Added_Hour = DateTime.UtcNow };
 
 
             var data = _BLL.Insert(newProduct);

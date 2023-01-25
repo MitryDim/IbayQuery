@@ -18,21 +18,25 @@ namespace BLL.Data
         private Dal.Data.CartsDAL _DAL;
 
 
-        private Dal.Data.Products _DALProducts;
+        private Dal.Data.ProductsDAL _DALProducts;
         private Dal.Data.Users _DALUsers;
 
 
-        private Mapper _UserMapper;
+        private Mapper _CartsMapper;
 
 
         public CartsBLL(DatabaseContext context)
         {
-            _DALProducts = new Dal.Data.Products(context);
+            _DALProducts = new Dal.Data.ProductsDAL(context);
             _DALUsers = new Dal.Data.Users(context);
             _DAL = new Dal.Data.CartsDAL(context);
             var _configUser = new MapperConfiguration(cfg => cfg.CreateMap<CartsEntities, CartsModel>().ReverseMap());
-            _UserMapper = new Mapper(_configUser);
+            _CartsMapper = new Mapper(_configUser);
 
+        }
+        public CartsModel SearchById(int Id)
+        {
+            return _CartsMapper.Map<CartsModel>(_DAL.SearchById(Id));
         }
 
         public CartsModel Insert(int IdUser, int IdProduit)
@@ -68,7 +72,7 @@ namespace BLL.Data
             }
            
 
-            return _UserMapper.Map<CartsModel>(carts);
+            return _CartsMapper.Map<CartsModel>(carts);
 
         }
 

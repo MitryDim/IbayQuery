@@ -12,14 +12,14 @@ namespace IbayApi.Controllers
     {
         private BLL.Data.CartsBLL _BLLCart;
         private BLL.Data.Users _BLLUser;
-        private BLL.Data.Products _BLLProduct;
+        private BLL.Data.ProductsBLL _BLLProduct;
 
         public CartsController(DatabaseContext context)
         {
 
             _BLLCart = new BLL.Data.CartsBLL(context);
             _BLLUser = new BLL.Data.Users(context);
-            _BLLProduct = new BLL.Data.Products(context);
+            _BLLProduct = new BLL.Data.ProductsBLL(context);
         }
 
         [HttpPost]
@@ -30,9 +30,10 @@ namespace IbayApi.Controllers
             if (userId == null)
                 return StatusCode(500, "Error when reading id in token information !");
 
-          
-          
-            return Ok(_BLLCart.Insert(userId, IdProduit));
+          CartsModel  newCart = _BLLCart.Insert(userId, IdProduit);
+
+
+            return Created("Add", newCart) ;
 
 
 
