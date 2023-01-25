@@ -27,8 +27,10 @@ namespace Dal.Entities
 
         public DateTime Added_Hour { get; set; }
 
+        [ForeignKey("User")]
         public int OwnedId { get; set; }
 
+        public virtual UsersEntities User { get; set; }
 
     }
 }

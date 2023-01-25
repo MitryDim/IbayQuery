@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,7 +12,6 @@ namespace Dal.Entities
 {
     public class CartsEntities
     {
-        [ScaffoldColumn(false)]
         [Key]
         public int Id { get; set; }
 
@@ -21,8 +21,9 @@ namespace Dal.Entities
         [ForeignKey("User")]
         public int UserId { get; set; }
 
-        public virtual ProductsEntities Product { get; set; }
 
+
+        public virtual ProductsEntities Product { get; set; }
 
         public virtual UsersEntities User { get; set; }
 

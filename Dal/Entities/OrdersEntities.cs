@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,11 +15,15 @@ namespace Dal.Entities
 
         public Guid NumOrders { get; set; }
 
+        [ForeignKey("Cart")]
         public int CartId { get; set; }
 
         public DateTime Added_Hour { get; set; }
 
         public bool IsPayed { get; set; }
 
+
+
+        public virtual CartsEntities Cart { get; set; }
     }
 }
