@@ -15,13 +15,28 @@ namespace Dal
         {
         }
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<ProductsEntities>()
-        //        .HasOne(p => p.User)
-        //        .WithMany()
-        //        .HasForeignKey(p => p.OwnerId);
-        //}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<CartsEntities>()
+                .HasOne(c => c.User)
+                .WithMany(u => u.Carts)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<CartsEntities>()
+                .HasOne(c => c.Product)
+                .WithMany(p => p.Carts)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<OrdersEntities>()
+                .HasOne(c => c.Cart)
+                .WithMany(p => p.Orders)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<ProductsEntities>()
+                .HasOne(c => c.User)
+                .WithMany(p => p.Products)
+                .OnDelete(DeleteBehavior.NoAction);
+        }
 
     }
 }

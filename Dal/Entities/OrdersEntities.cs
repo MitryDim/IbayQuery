@@ -20,10 +20,6 @@ namespace Dal.Entities
 
         public DateTime Added_Hour { get; set; }
 
-        public bool IsPayed { get; set; }
-
-
-
         public virtual CartsEntities Cart { get; set; }
     }
 }
