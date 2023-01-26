@@ -19,22 +19,22 @@ namespace Dal
         {
             modelBuilder.Entity<CartsEntities>()
                 .HasOne(c => c.User)
-                .WithMany(u => u.Carts)
+                .WithOne()
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<CartsEntities>()
                 .HasOne(c => c.Product)
-                .WithMany(p => p.Carts)
+                .WithOne()
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<OrdersEntities>()
                 .HasOne(c => c.Cart)
-                .WithMany(p => p.Orders)
+                .WithOne()
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<ProductsEntities>()
                 .HasOne(c => c.User)
-                .WithMany(p => p.Products)
+                .WithOne()
                 .OnDelete(DeleteBehavior.NoAction);
         }
 

@@ -32,7 +32,6 @@ namespace Dal.Entities
 
         public virtual UsersEntities User { get; set; }
 
-        public virtual ICollection<CartsEntities> Carts { get; set; }
 
 
     }

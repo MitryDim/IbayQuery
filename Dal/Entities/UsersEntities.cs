@@ -33,10 +33,6 @@ namespace Dal.Entities
         public Role role { get; set; }
 
         
-        public virtual ICollection<CartsEntities> Carts { get; set; }
-
-        public virtual ICollection<ProductsEntities> Products { get; set; }
-
 
     }
 }

@@ -28,8 +28,6 @@ namespace Dal.Entities
 
         public virtual UsersEntities User { get; set; }
 
-        public virtual ICollection<OrdersEntities> Orders { get; set; }
-
 
     }
 }
