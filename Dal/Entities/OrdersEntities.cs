@@ -13,13 +13,22 @@ namespace Dal.Entities
         [Key]
         public int Id { get; set; }
 
-        public Guid NumOrders { get; set; }
+        [ForeignKey("User")]
+        public int UserId { get; set; }
 
         [ForeignKey("Cart")]
         public int CartId { get; set; }
 
+        public decimal TotalPrice { get; set; }
+
+        public string Status { get; set; }
+
         public DateTime Added_Hour { get; set; }
 
+        public List<PayementsEntities> Payements { get; set; }
+
         public virtual CartsEntities Cart { get; set; }
+
+        public virtual UsersEntities User { get; set; }
     }
 }

@@ -83,6 +83,8 @@ namespace BLL.Data
         }
 
         public UsersModel Update(UsersModel user) {
+
+            user.Password = HashPassword(user.Password);
            
             var userUpdated = _DAL.Update(_UserMapper.Map<UsersEntities>(user));
 

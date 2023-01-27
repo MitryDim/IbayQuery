@@ -29,34 +29,34 @@ namespace IbayApi.Controllers
         /// Add an order, containing products in the cart
         /// </summary>
         // POST: Orders
-        [HttpPost]
-        [Authorize(Roles = "User, Seller, Admin")]
-        [ProducesResponseType(typeof(OrdersModel), 201)]
-        [ProducesResponseType(401)]
-        [ProducesResponseType(403)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
-        public IActionResult PostOrders([FromForm] OrdersInput order)
-        {
+        //[HttpPost]
+        //[Authorize(Roles = "User, Seller, Admin")]
+        //[ProducesResponseType(typeof(OrdersModel), 201)]
+        //[ProducesResponseType(401)]
+        //[ProducesResponseType(403)]
+        //[ProducesResponseType(404)]
+        //[ProducesResponseType(500)]
+        //public IActionResult PostOrders([FromForm] OrdersInput order)
+        //{
 
-            if (order == null)
-            {
-                return BadRequest();
-            }
+        //    if (order == null)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            // get the cart id with the id choice
-            var CartId = _BLLCart.SearchById(order.CartId);
+        //    // get the cart id with the id choice
+        //    var CartId = _BLLCart.SearchById(order.CartId);
 
-            if (CartId == null)
-                return BadRequest();
+        //    if (CartId == null)
+        //        return BadRequest();
 
-            var newProduct = new OrdersModel { NumOrders = Guid.NewGuid(), CartId = CartId.Id, Added_Hour = DateTime.UtcNow };
+        //    var newProduct = new OrdersModel { NumOrders = Guid.NewGuid(), CartId = CartId.Id, Added_Hour = DateTime.UtcNow };
 
 
-            var data = _BLL.Insert(newProduct);
-            // insertion de notre objet
-            return Created(data.NumOrders.ToString(), data);
-        }
+        //    var data = _BLL.Insert(newProduct);
+        //    // insertion de notre objet
+        //    return Created(data.NumOrders.ToString(), data);
+        //}
     }
 
 }

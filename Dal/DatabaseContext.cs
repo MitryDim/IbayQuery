@@ -11,6 +11,10 @@ namespace Dal
 
         public DbSet<CartsEntities> Carts { get; set; }
 
+        public DbSet<CartsItemsEntities> CartsItems { get; set; }
+
+        public DbSet<PayementsEntities> Payements { get; set; }
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) 
         {
         }
@@ -22,20 +26,21 @@ namespace Dal
                 .WithOne()
                 .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<CartsEntities>()
+            modelBuilder.Entity<CartsItemsEntities>()
                 .HasOne(c => c.Product)
                 .WithOne()
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<OrdersEntities>()
-                .HasOne(c => c.Cart)
-                .WithOne()
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<ProductsEntities>()
                 .HasOne(c => c.User)
                 .WithOne()
                 .OnDelete(DeleteBehavior.NoAction);
+
+
+            //    modelBuilder.Entity<ProductsEntities>()
+            //        .HasOne(c => c.User)
+            //        .WithOne()
+            //        .OnDelete(DeleteBehavior.NoAction);
         }
 
     }
