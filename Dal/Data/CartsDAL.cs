@@ -54,7 +54,7 @@ namespace Dal.Data
 
         public CartsEntities GetCart(int userId)
         {
-            return _context.Carts.Include(c => c.CartItems).FirstOrDefault(c => c.UserId == userId && c.Status == "In Progress");
+            return _context.Carts.Include(c => c.CartItems).ThenInclude(ci => ci.Product).FirstOrDefault(c => c.UserId == userId && c.Status == "In Progress");
         }
 
         public bool Update(CartsEntities cart)

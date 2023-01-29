@@ -10,6 +10,14 @@ namespace BLL.Models
 {
     public class CartsModel : CartsEntities
     {
+        public decimal TotalAmount
+        {
+            get
+            {
+             
+                return CartItems.Sum(x => x.Product != null ? x.Product.Price : 0 * x.Quantity);
+            }
+        }
 
     }
 }

@@ -20,13 +20,20 @@ namespace Dal.Data
         }
 
         // POST: Order
-        public OrdersEntities Insert(OrdersEntities order)
+        public bool Insert(OrdersEntities order)
         {
+            try
+            {
+                _context.Orders.Add(order);
+                _context.SaveChanges();
 
-            _context.Orders.Add(order);
-            _context.SaveChanges();
-
-            return order;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+           
+            return true;
 
         }
 

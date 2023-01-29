@@ -106,7 +106,8 @@ namespace BLL.Data
                         Id = ci.Id,
                         ProductId = ci.ProductId,
                         Quantity = ci.Quantity,
-                        Status = ci.Status
+                        Status = ci.Status,
+                        Product = ci.Product
                     }).ToList()
                 };
                 return cart;
