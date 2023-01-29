@@ -21,7 +21,7 @@ namespace BLL.Data
 
         public OrdersBLL(DatabaseContext context)
         {
-            _DALCart= new CartsDAL(context);
+            _DALCart = new CartsDAL(context);
             _DAL = new Dal.Data.OrdersDAL(context);
             var _configOrders = new MapperConfiguration(cfg => cfg.CreateMap<OrdersEntities, OrdersModel>().ReverseMap());
             _OrdersMapper = new Mapper(_configOrders);
@@ -29,7 +29,7 @@ namespace BLL.Data
 
 
         // Add an Order
-        public bool Insert(OrdersModel order )
+        public bool Insert(OrdersModel order)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace BLL.Data
                 var cart = _DALCart.GetCart(order.UserId);
 
                 if (cart == null)
-                    return false ;
+                    return false;
 
                 order.CartId = cart.Id;
                 order.Added_Hour = DateTime.Now;
@@ -50,18 +50,9 @@ namespace BLL.Data
                      CreatedAt= DateTime.Now
                     } };
 
-                    
-
-                
-
-
-                
-
                 var orderMap = _OrdersMapper.Map<OrdersEntities>(order);
 
-
-
-                  return _DAL.Insert(orderMap);
+                return _DAL.Insert(orderMap);
             }
             catch (Exception ex)
             {
