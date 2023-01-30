@@ -1,15 +1,9 @@
-﻿using Azure.Core;
-using BLL.Models;
+﻿using BLL.Models;
 using Dal;
 using Dal.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-using System.Data;
-using System.Diagnostics;
 using System.Security.Claims;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace IbayApi.Controllers
 {
@@ -65,7 +59,7 @@ namespace IbayApi.Controllers
         /// Add a product
         /// </summary>
         // POST: Product
-        [HttpPost]
+        [HttpPost("Add")]
         [Authorize(Roles = "Seller")]
         [ProducesResponseType(typeof(ProductsModel), 201)]
         [ProducesResponseType(401)]
@@ -95,7 +89,7 @@ namespace IbayApi.Controllers
         /// Update a product by his Id
         /// </summary>
         //// PUT: Product/5
-        [HttpPut]
+        [HttpPut("Update")]
         [Authorize(Roles = "Seller, Admin")]
         [ProducesResponseType(typeof(ProductsInput), 200)]
         [ProducesResponseType(401)]
@@ -131,7 +125,7 @@ namespace IbayApi.Controllers
         /// Delete a product by his Id
         /// </summary>
         // DELETE: Product/5
-        [HttpDelete]
+        [HttpDelete("Delete")]
         [Authorize(Roles = "Seller, Admin")]
         [ProducesResponseType(typeof(ProductsInput), 200)]
         [ProducesResponseType(401)]
