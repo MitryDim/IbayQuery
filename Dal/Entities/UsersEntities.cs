@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -28,6 +29,7 @@ namespace Dal.Entities
         public string Pseudo { get; set; }
 
         [DataType(DataType.Password)]
+        [JsonIgnore]
         public string Password { get; set; }
 
         public Role role { get; set; }

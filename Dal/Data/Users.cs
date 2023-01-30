@@ -44,17 +44,25 @@ namespace Dal.Data
           
         }  
         
-        public UsersEntities? Update(UsersEntities user)
+        public bool? Update(UsersEntities user)
         {
             var currentdata = _context.Users.Where(u => u.Id == user.Id).FirstOrDefault();
-           if (currentdata == null)
+           
+            if (currentdata == null)
             {
-                return currentdata;
+                return null;
             }
+           try
+            {
+                _context.Entry(currentdata).CurrentValues.SetValues(user);
+                _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                return false;
+            } 
 
-            _context.Entry(currentdata).CurrentValues.SetValues(user);
-            _context.SaveChangesAsync();
-            return user;
+            return true;
         }
 
         public void Delete (UsersEntities user) {

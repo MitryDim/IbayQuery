@@ -10,11 +10,17 @@ namespace Dal
     public class ProductsInput
     {
         [Required]
+        [MinLength(1)]
+        [MaxLength(200)]
         public string Name { get; set; }
+
         [Required]
         public IFormFile Image { get; set; }
+
         [Required]
+        [MinLength(1)]
         public decimal Price { get; set; }
+
         [Required]
         public Boolean Available { get; set; }
 

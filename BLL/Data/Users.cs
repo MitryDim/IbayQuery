@@ -82,18 +82,25 @@ namespace BLL.Data
             return users;
         }
 
-        public UsersModel Update(UsersModel user) {
+        public bool? Update(UsersModel user) {
 
             user.Password = HashPassword(user.Password);
-           
-            var userUpdated = _DAL.Update(_UserMapper.Map<UsersEntities>(user));
 
-            if(userUpdated == null)
+            try
             {
-                throw new Exception("Error when update user ! ");
-            }        
-          
-            return _UserMapper.Map< UsersModel>(userUpdated);
+                var userUpdated = _DAL.Update(_UserMapper.Map<UsersEntities>(user));
+
+                if (userUpdated == null)
+                {
+                    return null;
+                }
+            }
+            catch (Exception) {
+
+                return false;
+            }
+
+            return true;
         }
 
 
@@ -162,13 +169,13 @@ namespace BLL.Data
             return hashedPassword;
         }
 
-        public UsersModel Delete(int id)
+        public UsersModel? Delete(int id)
         {
             var userDeleted = new UsersModel();
             var userExist = _DAL.SearchUser(id);
 
             if (userExist == null) {
-                return userDeleted;
+                return null;
             }
            try
             {

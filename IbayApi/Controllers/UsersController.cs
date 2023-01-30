@@ -15,7 +15,8 @@ namespace IbayApi.Controllers
 
     [Route("[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase { 
+    public class UsersController : ControllerBase
+    {
 
         private BLL.Data.Users _BLL;
         private IConfiguration _config;
@@ -23,7 +24,7 @@ namespace IbayApi.Controllers
         public UsersController(DatabaseContext context, IConfiguration config)
         {
 
-            _BLL =  new BLL.Data.Users(context);
+            _BLL = new BLL.Data.Users(context);
             _config = config;
         }
 
@@ -34,7 +35,7 @@ namespace IbayApi.Controllers
         /// <param name="user"></param>
         /// <returns></returns>
         [AllowAnonymous]
-        [HttpPost("~/register")]
+        [HttpPost("register")]
         public ActionResult<UsersModel> Register([FromForm] UserInputRegister user)
         {
             if (user == null)
@@ -59,9 +60,13 @@ namespace IbayApi.Controllers
             return Ok(userCreate);
         }
 
-
+        /// <summary>
+        /// Authentification
+        /// </summary>
+        /// <param name="users"></param>
+        /// <returns>Token</returns>
         [AllowAnonymous]
-        [HttpPost("~/login")]
+        [HttpPost("login")]
         public ActionResult<string> Login([FromForm] UserInputLogin users)
         {
             var userData = new UsersModel { Email = users.Email, Password = users.Password };
@@ -73,7 +78,13 @@ namespace IbayApi.Controllers
             return Ok(token);
         }
 
-        [HttpGet,Authorize(Roles = "Admin")]
+        /// <summary>
+        /// Get all user
+        /// </summary>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(UsersModel), 200)]
+        [ProducesResponseType(401), ProducesResponseType(403), ProducesResponseType(404)]
+        [HttpGet, Authorize(Roles = "Admin")]
         public ActionResult<List<UsersModel>> GetUser()
         {
 
@@ -83,8 +94,16 @@ namespace IbayApi.Controllers
 
 
 
-
-        [HttpPut("~/update"),Authorize]
+        /// <summary>
+        /// Update yourself Or update an user if you are admin
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="users"></param>
+        /// <returns></returns>
+        [HttpPut("update"), Authorize]
+        [ProducesResponseType(typeof(UsersModel), 200)]
+        [ProducesResponseType(401), ProducesResponseType(403), ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public ActionResult<UsersModel> Update([FromQuery] int id, [FromForm] UserInput users)
         {
 
@@ -96,32 +115,41 @@ namespace IbayApi.Controllers
             if (userId == null)
                 return StatusCode(500, "Error when reading id in token information !");
 
-            if (userId != id )
+            if (userId != id)
             {
                 if (Role.Admin.ToString() != User.FindFirst(ClaimTypes.Role).Value)
                     return Unauthorized("You don't have permissions to update this person !");
             }
 
-            var user = new UsersModel { Id= id, Pseudo = users.Pseudo, Email = users.Email,Password = users.Password, role= users.role };
-           
+            var user = new UsersModel { Id = id, Pseudo = users.Pseudo, Email = users.Email, Password = users.Password, role = users.role };
+
             try
             {
-                user = _BLL.Update(user);
-
-            } catch (Exception ex)
+               var userUpdated = _BLL.Update(user);
+                if (userUpdated == null) {
+                    return NotFound("Veuillez vérifier votre saisie !");
+                }
+            }
+            catch (Exception ex)
             {
-
                 return StatusCode(500, ex.Message);
             }
-                return Ok(user);
+
+            return Ok(user);
         }
 
-        [HttpDelete]
-        [Authorize]
+        /// <summary>
+        /// Delete yourself or delete an user if you are admin
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("Delete"), Authorize]
+        [ProducesResponseType(typeof(UsersModel), 200)]
+        [ProducesResponseType(401), ProducesResponseType(403), ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public ActionResult<UsersModel> Delete([FromQuery] int id)
         {
             var user = new UsersModel();
-
 
             int? userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
@@ -138,11 +166,13 @@ namespace IbayApi.Controllers
             {
                 user = _BLL.Delete(id);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-               
-                return StatusCode(500,ex.Message);
+                return StatusCode(500, ex.Message);
             }
+
+            if (userId == null)
+                return NotFound("Utilisateur introuvable !");
 
             return Ok(user);
         }
