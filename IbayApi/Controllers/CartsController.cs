@@ -2,6 +2,7 @@
 using Dal;
 using Dal.Entities;
 using IbayApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -39,6 +40,7 @@ namespace IbayApi.Controllers
         //}
 
         [HttpPost("/add")]
+        [Authorize]
         public IActionResult Add(CartsInputCreate cart)
         {
             CartsModel cartModel = new CartsModel
@@ -68,6 +70,12 @@ namespace IbayApi.Controllers
         }
 
         [HttpGet("/Get")]
+        [Authorize]
+        [ProducesResponseType(typeof(OrdersModel), 200)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(403)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public IActionResult GetCart()
         {
             int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
@@ -83,6 +91,7 @@ namespace IbayApi.Controllers
         }
 
         [HttpPut("/updateProduct")]
+        [Authorize]
         public IActionResult Update(CartsModel cart)
         {
             var result = _BLLCart.Update(cart);
@@ -93,6 +102,7 @@ namespace IbayApi.Controllers
         }
 
         [HttpDelete("/RemoveFromCart")]
+        [Authorize]
         public IActionResult Delete(int productId)
         {
 
