@@ -52,7 +52,15 @@ namespace BLL.Data
 
                 var orderMap = _OrdersMapper.Map<OrdersEntities>(order);
 
-                return _DAL.Insert(orderMap);
+                var IsInsert = _DAL.Insert(orderMap);
+
+                if (IsInsert && order.Status != "cancel")
+                {
+                    cart.Status = "confirmed";
+                    _DALCart.Update(cart);
+                }
+
+                return IsInsert;
             }
             catch (Exception ex)
             {

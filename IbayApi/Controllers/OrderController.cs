@@ -35,28 +35,27 @@ namespace IbayApi.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public IActionResult PostOrders([FromForm] string paymentType,string status, decimal TotalPrice)
+        public IActionResult PostOrders([FromForm] string paymentType, string status, decimal TotalPrice)
         {
 
             int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
 
             if (userId == null)
                 return StatusCode(500, "Error when reading id in token information !");
 
 
-
-
             var newOrder = new OrdersModel
             {
                 UserId = userId,
-                Status = status,
+                Status = status.ToLower().Trim(),
                 TotalPrice = TotalPrice,
                 Payements = new List<Dal.Entities.PayementsEntities>
                 {
                     new Dal.Entities.PayementsEntities
                     {
                         Amount= TotalPrice,
-                        Type = paymentType
+                        Type = paymentType.ToLower().Trim()
                     }
                 }
             };

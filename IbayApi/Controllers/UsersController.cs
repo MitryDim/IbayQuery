@@ -117,6 +117,7 @@ namespace IbayApi.Controllers
         }
 
         [HttpDelete]
+        [Authorize]
         public ActionResult<UsersModel> Delete([FromQuery] int id)
         {
             var user = new UsersModel();
