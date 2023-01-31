@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Dal.Entities
@@ -14,9 +16,11 @@ namespace Dal.Entities
         [Key]
         public int Id { get; set; }
 
+        [MaxLength(100)]
         public string Name { get; set; }
 
         [NotMapped]
+        [JsonIgnore]
         public IFormFile Image { get; set; }
 
         public string ImageURL { get; set; }
@@ -30,6 +34,7 @@ namespace Dal.Entities
         [ForeignKey("User")]
         public int OwnedId { get; set; }
 
+        [JsonIgnore]
         public virtual UsersEntities User { get; set; }
 
 

@@ -26,13 +26,16 @@ namespace Dal.Entities
         [Required]
         public string Email { get; set; }
 
+        [MaxLength(100)]
         public string Pseudo { get; set; }
 
         [DataType(DataType.Password)]
         [JsonIgnore]
         public string Password { get; set; }
 
+
         public Role role { get; set; }
+        
 
         
 

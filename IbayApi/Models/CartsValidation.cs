@@ -1,4 +1,6 @@
-﻿namespace IbayApi.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace IbayApi.Models
 {
     public class CartsInputCreate
     {

@@ -25,28 +25,17 @@ namespace Dal.Data
             return _context.Carts.FirstOrDefault(c => c.Id == id);
         }
 
-        public bool AddToCart(CartsItemsEntities cart)
-        {
-            try
-            {
-                _context.CartsItems.Add(cart);
-                _context.SaveChanges();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
+
 
         public bool AddToCart(CartsEntities cartItem)
         {
             try
             {
-               _context.Carts.Add(cartItem);
+                _context.Carts.Add(cartItem);
                 _context.SaveChanges();
                 return true;
-            }catch(Exception)
+            }
+            catch (Exception)
             {
                 return false;
             }
@@ -64,55 +53,12 @@ namespace Dal.Data
                 _context.Carts.Update(cart);
                 _context.SaveChanges();
                 return true;
-            } catch(Exception)
-            {
-                return false;
-            }
-        }
-
-        public bool Update(CartsItemsEntities cartItem)
-        {
-            try
-            {
-                _context.CartsItems.Update(cartItem);
-                _context.SaveChanges();
-                return true;
             }
             catch (Exception)
             {
                 return false;
             }
         }
-
-
-
-        public bool RemoveFromCart(int productId,int userId)
-        {
-            try
-            {
-                var cart = _context.Carts
-                            .Include(c => c.CartItems)
-                            .FirstOrDefault(c => c.UserId == userId);
-                if (cart == null)
-                    return false;
-
-                var cartItemToRemove = cart.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
-
-                if (cartItemToRemove != null)
-                {
-                    cart.CartItems.Remove(cartItemToRemove);
-                    _context.SaveChanges();
-                    return true;
-                }
-
-                return false;    
-
-            } catch(Exception)
-            {
-                return false;
-            }
-        }
-
 
     }
 }

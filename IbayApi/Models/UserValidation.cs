@@ -14,6 +14,7 @@ namespace Dal
     public class UserInput
     {
         [Required]
+        [MaxLength(100)]
         public string Pseudo { get; set; }
 
         [EmailAddress]
@@ -27,7 +28,7 @@ namespace Dal
         public string Password { get; set; }
 
         [Required]
-        public Role role { get; set; }
+        public Role role { get; set;  }
 
     }
 
@@ -38,6 +39,7 @@ namespace Dal
     {
 
         [Required]
+        [MaxLength(100)]
         public string Pseudo { get; set; }
 
         [EmailAddress]

@@ -34,20 +34,26 @@ namespace Dal.Data
         public List<ProductsEntities> GetAll()
         {
 
-            return _context.Products.ToList();
+            return _context.Products.Where(p => p.Available == true).ToList();
 
         }
         public ProductsEntities SearchById(int Id)
         {
-            return _context.Products.Where(p => p.Id == Id).FirstOrDefault();
+            return _context.Products.Where(p => p.Id == Id && p.Available == true).FirstOrDefault();
         }
 
         // POST: Product
         public ProductsEntities Insert(ProductsEntities product)
         {
-
-            _context.Products.Add(product);
-            _context.SaveChanges();
+            try
+            {
+                _context.Products.Add(product);
+                _context.SaveChanges();
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+           
 
             return product;
                
@@ -64,39 +70,52 @@ namespace Dal.Data
         }
 
         // PUT : Product
-        public ProductsEntities Update(ProductsEntities product)
+        public bool Update(ProductsEntities product)
         {
             var currentProduct = _context.Products.FirstOrDefault(p => p.Id == product.Id);
 
             if (currentProduct == null)
             {
-                throw new Exception("Null");
+                throw new Exception("Produit non existant !");
             }
+
             product.ImageURL = currentProduct.ImageURL;
             product.Added_Hour = currentProduct.Added_Hour;
             product.OwnedId = currentProduct.OwnedId;
-
-            _context.Entry(currentProduct).CurrentValues.SetValues(product);
-            _context.SaveChangesAsync();
-
-            return product;
+            try
+            {
+                _context.Entry(currentProduct).CurrentValues.SetValues(product);
+                _context.SaveChangesAsync();
+            }catch(Exception)
+            {
+                return false;
+            }
+           
+            return true;
 
         }
 
         // DELETE : Product
-        public ProductsEntities Delete(int id)
+        public bool Delete(int id)
         {
+            try
+            {
             var currentProduct = _context.Products.FirstOrDefault(p => p.Id == id);
 
             if (currentProduct == null)
             {
                 throw new Exception("Null");
             }
+                currentProduct.Available = false;
+                _context.Products.Update(currentProduct);
+                _context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                throw new Exception("Erreur lors de la suppression");
+            }
 
-            _context.Products.Remove(currentProduct);
-            _context.SaveChanges();
-
-            return currentProduct;
+            return true;
 
         }
 

@@ -33,7 +33,7 @@ namespace IbayApi.Controllers
         [ProducesResponseType(typeof(ProductsEntities), 200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public ActionResult<List<ProductsEntities>> GetAll([FromQuery] string sortBy = "Name", int limit = 10, string query = "")
+        public ActionResult<List<ProductsModel>> GetAll([FromQuery] string sortBy = "Name", int limit = 10, string query = "")
         {
             return Ok(_BLL.GetAll(sortBy, limit , query));
         }
@@ -66,7 +66,7 @@ namespace IbayApi.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public IActionResult PostProduct([FromForm] ProductsInput product)
+        public ActionResult<ProductsModel> PostProduct([FromForm] ProductsInput product)
         {
 
             if (product == null)
@@ -117,8 +117,11 @@ namespace IbayApi.Controllers
             var newProduct = new ProductsModel { Id = id, Name = product.Name, Image = product.Image, Price = product.Price, Available = product.Available };
 
             var data = _BLL.Update(newProduct);
+
+            if (data)
+                return Ok("Mise à jour effectuée !");
             // update de notre objet
-            return Ok(data);
+            return BadRequest();
         }
 
         /// <summary>
@@ -136,17 +139,25 @@ namespace IbayApi.Controllers
         {
             // get the owner id
             var OwnedId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            // check if the product is owned by the currently logged in user
-            var currentProduct = _BLL.CheckProductOwner(id, int.Parse(OwnedId));
+            var role = User.FindFirst(ClaimTypes.Role).Value;
 
-            if (currentProduct == false)
+
+            // check if the product is owned by the currently logged in user
+            var productOwner = _BLL.CheckProductOwner(id, int.Parse(OwnedId));
+
+            if (productOwner == false)
             {
-                return Unauthorized();
+                if (role != "Admin")
+                    return Unauthorized();
             }
 
             var data = _BLL.Delete(id);
+            if (data == null)
+                return NotFound("Le produit n'existe pas !");
+            else if (data.Value)
+                return Ok("Le produit a bien été supprimé !");
             // delete de notre objet
-            return Ok(data);
+            return BadRequest();
 
         }
     }

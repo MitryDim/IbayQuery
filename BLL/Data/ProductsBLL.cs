@@ -35,11 +35,14 @@ namespace BLL.Data
 
 
         // GET: Products
-        public List<ProductsEntities> GetAll(string sortBy, int limit, string query)
+        public List<ProductsModel> GetAll(string sortBy, int limit, string query)
         {
-            var products = _DAL.GetAll();
-            products = products.Where(p => p.Name.ToLower().Contains(query.ToLower()) || p.Added_Hour.ToString("dd/MM/yyyy").Equals(query) || p.Price.ToString().TrimEnd('0', ',').Equals(query)).ToList();
+            try
+            {
+            var productsEntities = _DAL.GetAll();
+            var products = _ProductMapper.Map<List<ProductsModel>>(productsEntities);
 
+            products = products.Where(p => p.Name.ToLower().Contains(query.ToLower()) || p.Added_Hour.ToString("dd/MM/yyyy").Equals(query) || p.Price.ToString().TrimEnd('0', ',').Equals(query)).ToList();
 
 
             switch (sortBy.ToLower())
@@ -61,9 +64,11 @@ namespace BLL.Data
                     break;
             }
 
-            try
-            {
+            
                 return products.Take(limit).ToList();
+
+
+
             }
             catch(Exception ex) { 
                 throw new Exception(ex.Message);
@@ -76,7 +81,7 @@ namespace BLL.Data
         {
             try
             {
-                return _DAL.GetAll().FirstOrDefault(p => p.Id == id);
+                return _DAL.SearchById(id);
             }
             catch (Exception ex)
             {
@@ -86,12 +91,14 @@ namespace BLL.Data
         }
 
         // POST: Add product
-        public ProductsEntities Insert(ProductsModel product)
+        public ProductsModel Insert(ProductsModel product)
         {
 
 
-            //get the file extension
-            var fileExtension = Path.GetExtension(product.Image.FileName);
+            try
+            {
+                //get the file extension
+                var fileExtension = Path.GetExtension(product.Image.FileName);
             //generate a new file name
             var newFileName = Guid.NewGuid() + fileExtension;
             //get the file path
@@ -108,10 +115,8 @@ namespace BLL.Data
             product.ImageURL = filePath;
 
 
-            try
-            {
                 var productMap = _ProductMapper.Map<ProductsEntities>(product);
-                return _DAL.Insert(productMap);
+                return _ProductMapper.Map <ProductsModel>(_DAL.Insert(productMap));
             }
             catch(Exception ex)
             {
@@ -152,7 +157,7 @@ namespace BLL.Data
 
         // PUT : Update Product
 
-        public ProductsEntities Update(ProductsModel product)
+        public bool Update(ProductsModel product)
         {
             var productExist = _DAL.CheckProductExists(product.Id);
 
@@ -173,17 +178,18 @@ namespace BLL.Data
         }
 
         // DELETE : Delete Product
-        public ProductsEntities Delete(int id)
+        public bool? Delete(int id)
         {
-            var productExist = _DAL.CheckProductExists(id);
+            try
+            {
+                var productExist = _DAL.CheckProductExists(id);
 
             if (productExist == false)
             {
-                throw new Exception("Produit Introuvable");
+                    return null;
             }
 
-            try
-            {
+            
                 return _DAL.Delete(id);
             }
             catch (DbUpdateConcurrencyException)

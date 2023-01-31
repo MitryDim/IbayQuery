@@ -21,6 +21,7 @@ namespace BLL.Data
 
         private Dal.Data.ProductsDAL _DALProducts;
         private Dal.Data.Users _DALUsers;
+        private CartsItemsDAL _DALCartItems;
 
 
         private Mapper _CartsMapper;
@@ -31,6 +32,7 @@ namespace BLL.Data
             _DALProducts = new Dal.Data.ProductsDAL(context);
             _DALUsers = new Dal.Data.Users(context);
             _DAL = new Dal.Data.CartsDAL(context);
+            _DALCartItems = new CartsItemsDAL(context);
             var _configUser = new MapperConfiguration(cfg => cfg.CreateMap<CartsEntities, CartsModel>().ReverseMap());
             _CartsMapper = new Mapper(_configUser);
 
@@ -65,7 +67,7 @@ namespace BLL.Data
                 if (CartItemExist != null)
                 {
                     CartItemExist.Quantity += cart.CartItems[0].Quantity;
-                  return  _DAL.Update(CartItemExist);
+                  return _DALCartItems.Update(CartItemExist);
                 }
                 else
                 {
@@ -76,7 +78,7 @@ namespace BLL.Data
                         Status = cart.CartItems[0].Status
                     };
 
-                    return  _DAL.AddToCart(CartItemExist);
+                    return _DALCartItems.Insert(CartItemExist);
                 }
 
             }
@@ -144,55 +146,18 @@ namespace BLL.Data
             }
         }
 
-        public bool RemoveFromCart(int productId,int userId)
+        public bool RemoveFromCart(int productId, int userId)
         {
             try
             {
-                return _DAL.RemoveFromCart(productId,userId);
-            
-            }catch(Exception)
+                return _DALCartItems.Delete(productId, userId);
+
+            }
+            catch (Exception)
             {
                 return false;
             }
         }
-
-
-        //public CartsModel Insert(int IdUser, int IdProduit)
-        //{
-
-        //    ProductsEntities currentProduct = _DALProducts.SearchById(IdProduit);
-
-        //    if (currentProduct == null)
-        //        throw new Exception("Une erreur s'est produite, produit introuvable ! ");
-
-        //    if (currentProduct.Available != true)
-        //         throw new Exception("Le produit n'est plus disponible !");
-
-
-        //    UsersEntities currentUser = _DALUsers.SearchUser(IdUser);
-
-        //    if (currentUser == null)
-        //        throw new Exception("Une erreur s'est produite, Utilisateur introuvable ! ");
-
-
-        //    CartsEntities carts = new CartsEntities { Product = currentProduct, User = currentUser, ProductId = currentProduct.Id, UserId = currentUser.Id };
-
-
-        //    try
-        //    {
-
-        //         _DAL.Insert(carts);
-
-        //    } catch(Exception ex)
-        //    {
-                
-        //        throw new Exception("Une erreur s'est produite lors de l'insertion dans le panier");
-        //    }
-           
-
-        //    return _CartsMapper.Map<CartsModel>(carts);
-
-        //}
 
     }
 }

@@ -135,7 +135,7 @@ namespace BLL.Data
             var token = new JwtSecurityToken(config["Jwt:Issuer"],
                 config["Jwt:Audience"],
                 claims,
-                expires: DateTime.UtcNow.AddMinutes(15),
+                expires: DateTime.UtcNow.AddDays(1),
                 signingCredentials: credentials);
 
 
