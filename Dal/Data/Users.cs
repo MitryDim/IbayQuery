@@ -65,9 +65,17 @@ namespace Dal.Data
             return true;
         }
 
-        public void Delete (UsersEntities user) {
-            _context.Remove(user);
-            _context.SaveChangesAsync();
+        public bool Delete (UsersEntities user) {
+            try
+            {
+                _context.Remove(user);
+                _context.SaveChangesAsync();
+            }
+            catch(Exception)
+            {
+                throw new Exception("Erreur when delete user ! ");
+            }
+            return true;
         }
     }
 }

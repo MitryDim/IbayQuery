@@ -153,15 +153,16 @@ namespace IbayApi.Controllers
         [ProducesResponseType(typeof(UsersModel), 200)]
         [ProducesResponseType(401), ProducesResponseType(403), ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public ActionResult<UsersModel> Delete([FromQuery] int id)
+        public IActionResult Delete([FromQuery] int id)
         {
             var user = new UsersModel();
 
-            int? userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-            if (userId == null)
+            if (User.FindFirst(ClaimTypes.NameIdentifier) == null)
                 return StatusCode(500, "Error when reading id in token information !");
 
+            int? userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+           
             if (userId != id)
             {
                 if (Role.Admin.ToString() != User.FindFirst(ClaimTypes.Role).Value)
@@ -170,17 +171,17 @@ namespace IbayApi.Controllers
 
             try
             {
-                user = _BLL.Delete(id);
+
+              var data =  _BLL.Delete(id);
+                if (data == null)
+                    return BadRequest("Utilisateur introuvable !");
+                else 
+                    return Ok("Utilisateur supprimé");
             }
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
-
-            if (userId == null)
-                return NotFound("Utilisateur introuvable !");
-
-            return Ok(user);
         }
 
 
