@@ -4,7 +4,6 @@ namespace IbayApi.Models
 {
     public class CartsInputCreate
     {
-        public int UserId { get; set; }
 
         public virtual CartItemsCreate CartItems { get; set; }
         
