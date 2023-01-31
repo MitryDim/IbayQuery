@@ -36,10 +36,8 @@ namespace IbayApi.Controllers
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("register")]
-        [ProducesResponseType(typeof(ProductsInput), 201)]
-        [ProducesResponseType(401)]
-        [ProducesResponseType(403)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(UsersModel), 201)]
+        [ProducesResponseType(401), ProducesResponseType(403), ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public ActionResult<UsersModel> Register([FromForm] UserInputRegister user)
         {
@@ -72,10 +70,8 @@ namespace IbayApi.Controllers
         /// <returns>Token</returns>
         [AllowAnonymous]
         [HttpPost("login")]
-        [ProducesResponseType(typeof(ProductsInput), 200)]
-        [ProducesResponseType(401)]
-        [ProducesResponseType(403)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(401), ProducesResponseType(403), ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public ActionResult<string> Login([FromForm] UserInputLogin users)
         {

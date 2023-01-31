@@ -1,7 +1,6 @@
 ﻿using BLL.Models;
 using Dal;
 using Dal.Entities;
-using IbayApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -32,10 +31,8 @@ namespace IbayApi.Controllers
         /// <param name="quantity"></param>
         /// <returns></returns>
         [HttpPost("/add"), Authorize]
-        [ProducesResponseType(typeof(ProductsInput), 201)]
-        [ProducesResponseType(401)]
-        [ProducesResponseType(403)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(401), ProducesResponseType(403), ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public IActionResult Add([FromForm] int productId, [FromForm] int quantity)
         {
@@ -80,10 +77,8 @@ namespace IbayApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("/Get"), Authorize]
-        [ProducesResponseType(typeof(ProductsInput), 200)]
-        [ProducesResponseType(401)]
-        [ProducesResponseType(403)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(401), ProducesResponseType(403), ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public IActionResult GetCart()
         {
@@ -125,10 +120,8 @@ namespace IbayApi.Controllers
         /// <param name="productId"></param>
         /// <returns></returns>
         [HttpDelete("/RemoveFromCart"), Authorize]
-        [ProducesResponseType(typeof(ProductsInput), 200)]
-        [ProducesResponseType(401)]
-        [ProducesResponseType(403)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(401), ProducesResponseType(403), ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public IActionResult Delete(int productId)
         {

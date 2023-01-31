@@ -137,13 +137,17 @@ namespace IbayApi.Controllers
         [ProducesResponseType(500)]
         public IActionResult DeleteProduct([FromQuery] int id)
         {
+
+            if(User.FindFirst(ClaimTypes.NameIdentifier) == null || User.FindFirst(ClaimTypes.Role) ==null)
+                return BadRequest();
+
             // get the owner id
-            var OwnedId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var OwnedId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var role = User.FindFirst(ClaimTypes.Role).Value;
 
 
             // check if the product is owned by the currently logged in user
-            var productOwner = _BLL.CheckProductOwner(id, int.Parse(OwnedId));
+            var productOwner = _BLL.CheckProductOwner(id, OwnedId);
 
             if (productOwner == false)
             {
