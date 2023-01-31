@@ -1,8 +1,4 @@
-﻿using Dal.Entities;
-using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations;
-
-namespace IbayQuery
+﻿namespace IbayQuery
 {
 
         public enum Role

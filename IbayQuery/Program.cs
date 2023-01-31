@@ -1,15 +1,7 @@
 ﻿
 using Newtonsoft.Json;
-using System;
-using System.Net.Http;
-using IbayApi;
-using Dal.Entities;
 using IbayQuery;
-using System.Text;
-using System.Security.Policy;
 using System.Net.Http.Headers;
-using NuGet.Common;
-using Microsoft.AspNetCore.Http;
 
 class Program
 {
