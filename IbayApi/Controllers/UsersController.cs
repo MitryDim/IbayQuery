@@ -36,6 +36,9 @@ namespace IbayApi.Controllers
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("register")]
+        [ProducesResponseType(typeof(UsersModel), 201)]
+        [ProducesResponseType(401), ProducesResponseType(403), ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public ActionResult<UsersModel> Register([FromForm] UserInputRegister user)
         {
             if (user == null)
@@ -57,7 +60,7 @@ namespace IbayApi.Controllers
                 return BadRequest();
             }
 
-            return Ok(userCreate);
+            return Created("Register ",userCreate);
         }
 
         /// <summary>
@@ -67,6 +70,9 @@ namespace IbayApi.Controllers
         /// <returns>Token</returns>
         [AllowAnonymous]
         [HttpPost("login")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(401), ProducesResponseType(403), ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public ActionResult<string> Login([FromForm] UserInputLogin users)
         {
             var userData = new UsersModel { Email = users.Email, Password = users.Password };
