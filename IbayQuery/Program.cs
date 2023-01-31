@@ -49,7 +49,17 @@ class Program
         // Delete an User
         //await Users_Delete();
 
+        // Add product on a Cart
+        //await Carts_Insert();
 
+        // Get all Carts
+        //Carts_GetAll();
+
+        // Delete a product on a Cart
+        //await Carts_Delete();
+
+        // Add an order
+        await Orders_Insert();
 
         Console.Read();
     }
@@ -290,7 +300,7 @@ class Program
 
         try
         {
-            HttpResponseMessage response = client.PostAsync("https://localhost:7140/Users/register", form).Result;
+            HttpResponseMessage response = client.PostAsync("https://localhost:7140/Users/Register", form).Result;
 
             if (response.IsSuccessStatusCode)
                 Console.WriteLine($"{pseudo} - {email1} - {role} - Register Successfully 👍");
@@ -323,7 +333,7 @@ class Program
 
         try
         {
-            HttpResponseMessage response = client.PostAsync("https://localhost:7140/Users/login", form).Result;
+            HttpResponseMessage response = client.PostAsync("https://localhost:7140/Users/Login", form).Result;
 
             if (response.IsSuccessStatusCode)
             {
@@ -418,6 +428,40 @@ class Program
     }
 
 
+    //////////////////////////////////// CARTS
+    ///
+
+
+    public static void Carts_GetAll()
+    {
+        // Set JWT as bearer token in Authorization header
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        try
+        {
+            // Get all users
+            var response = client.GetAsync("https://localhost:7140/Carts").Result;
+            dynamic cartsData = JsonConvert.DeserializeObject<List<Carts>>(response.Content.ReadAsStringAsync().Result);
+
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("\n----------- All Carts ----------- \n");
+                foreach (var cart in cartsData.CartsItems)
+                {
+                    Console.WriteLine($"{cart.ProductId} - {cart.Quantity} - (Id :{cart.Id})");
+                }
+                Console.WriteLine("\n--------------------------------");
+            }
+            else
+                Console.WriteLine("{0}-({1})", (int)response.StatusCode, response.ReasonPhrase);
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+    }
 
     public static async Task<bool> Carts_Insert()
     {
@@ -433,9 +477,12 @@ class Program
         form.Add(new StringContent(productId), "productId");
         form.Add(new StringContent(quantity), "quantity");
 
+        // Set JWT as bearer token in Authorization header
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
         try
         {
-            HttpResponseMessage response = client.PostAsync($"https://localhost:7140/Carts/Add?productId={productId}&quantity={quantity}", form).Result;
+            HttpResponseMessage response = client.PostAsync($"https://localhost:7140/Carts/Add", form).Result;
 
             if (response.IsSuccessStatusCode)
             {
@@ -452,4 +499,72 @@ class Program
         return true;
     }
 
+    public static async Task<bool> Carts_Delete()
+    {
+        Console.WriteLine("--------- Delete a product in a Cart ---------");
+
+        Console.WriteLine("\n\nInsert Product Id :");
+        int productId = int.Parse(Console.ReadLine());
+
+
+        // Set JWT as bearer token in Authorization header
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        try
+        {
+            HttpResponseMessage response = client.DeleteAsync($"https://localhost:7140/Carts/RemoveFromCart/?productId={productId}").Result;
+
+            if (response.IsSuccessStatusCode)
+                Console.WriteLine($"Product Id : {productId} - Deleted Successfully 👍");
+            else
+                Console.WriteLine("{0}-({1})", (int)response.StatusCode, response.ReasonPhrase);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+        return true;
+    }
+
+
+    //////////////////////////////////// Orders
+    ///
+
+    public static async Task<bool> Orders_Insert()
+    {
+        var form = new MultipartFormDataContent();
+        Console.WriteLine("--------- Add an Order ---------");
+
+
+        Console.WriteLine("\n\nStatus :");
+        string status = Console.ReadLine();
+
+        Console.WriteLine("\n\nTotalPrice :");
+        decimal totalPrice = decimal.Parse(Console.ReadLine());
+
+        Console.WriteLine("\n\nPaymentType :");
+        string paymentType = Console.ReadLine();
+
+
+        form.Add(new StringContent(status), "Status");
+        form.Add(new StringContent(totalPrice.ToString()), "TotalPrice");
+        form.Add(new StringContent(paymentType), "Type");
+
+        try
+        {
+            HttpResponseMessage response = client.PostAsync($"https://localhost:7140/Orders/Add/?status={status}&TotalPrice={totalPrice}", form).Result;
+
+            if (response.IsSuccessStatusCode)
+                Console.WriteLine($"{status} - {totalPrice} € - {paymentType} - Connected Successfully 👍");
+            else
+                Console.WriteLine("{0}-({1})", (int)response.StatusCode, response.ReasonPhrase);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+        return true;
+    }
 }

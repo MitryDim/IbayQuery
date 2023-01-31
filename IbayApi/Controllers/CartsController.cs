@@ -53,9 +53,9 @@ namespace IbayApi.Controllers
                 CartItems = new List<CartsItemsEntities> {
                     new CartsItemsEntities
                     {
-                         ProductId = productId,
-                    Quantity = quantity,
-                    Status = "In Progress"
+                        ProductId = productId,
+                        Quantity = quantity,
+                        Status = "In Progress"
                     }
                    
                 }

@@ -39,7 +39,7 @@ namespace IbayApi.Controllers
         }
 
         /// <summary>
-        /// Find an availabled product by Id
+        /// Find an available product by an Id
         /// </summary>
         // GET: Product by ID
         [HttpGet("{id}")]
@@ -70,9 +70,8 @@ namespace IbayApi.Controllers
         {
 
             if (product == null)
-            {
                 return BadRequest();
-            }
+            
 
             // get the owner id
             var ownerId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
