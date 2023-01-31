@@ -44,15 +44,15 @@ namespace BLL.Data
                 return null;
             }
             user.Password = HashPassword(user.Password);
-            var userMap =  _UserMapper.Map<UsersEntities>(user);
+            var userMap = _UserMapper.Map<UsersEntities>(user);
             return _UserMapper.Map<UsersModel>(_DAL.Insert(userMap));
 
-            
+
         }
 
         public UsersModel GetUserByEmail(string email)
         {
-            
+
             var userSearch = _DAL.SearchUser(email);
             var user = new UsersModel();
             if (userSearch != null)
@@ -82,7 +82,8 @@ namespace BLL.Data
             return users;
         }
 
-        public bool? Update(UsersModel user) {
+        public bool? Update(UsersModel user)
+        {
 
             user.Password = HashPassword(user.Password);
 
@@ -95,7 +96,8 @@ namespace BLL.Data
                     return null;
                 }
             }
-            catch (Exception) {
+            catch (Exception)
+            {
 
                 return false;
             }
@@ -108,12 +110,12 @@ namespace BLL.Data
         {
 
 
-           
+
 
             var userAuth = Authenticate(user);
             if (userAuth != null)
             {
-                var token = GenerateToken(userAuth,config);
+                var token = GenerateToken(userAuth, config);
                 return token;
             }
 
@@ -152,7 +154,7 @@ namespace BLL.Data
 
             if (currentUser != null)
             {
-                UsersEntities userModel = currentUser; 
+                UsersEntities userModel = currentUser;
                 return userModel;
             }
             return null;
@@ -169,26 +171,22 @@ namespace BLL.Data
             return hashedPassword;
         }
 
-        public UsersModel? Delete(int id)
+        public bool? Delete(int id)
         {
-            var userDeleted = new UsersModel();
             var userExist = _DAL.SearchUser(id);
 
-            if (userExist == null) {
+            if (userExist == null)
+            {
                 return null;
             }
-           try
+            try
             {
-                _DAL.Delete(userExist);
+                return _DAL.Delete(userExist);
             }
-            catch
+            catch (Exception ex)
             {
-                throw new Exception("Error when delete user");
+                throw new Exception(ex.Message);
             }
-            
-            userDeleted = new UsersModel { Pseudo = userExist.Pseudo, Email = userExist.Email };
-            return userDeleted;
-
         }
 
 

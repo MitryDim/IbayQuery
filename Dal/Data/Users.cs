@@ -7,7 +7,7 @@ namespace Dal.Data
     {
         DatabaseContext _context;
 
-        public  Users(DatabaseContext context)
+        public Users(DatabaseContext context)
         {
             _context = context;
         }
@@ -37,22 +37,22 @@ namespace Dal.Data
 
         public UsersEntities? Insert(UsersEntities user)
         {
-            
+
             _context.Users.AddAsync(user);
             _context.SaveChanges();
             return user;
-          
-        }  
-        
+
+        }
+
         public bool? Update(UsersEntities user)
         {
             var currentdata = _context.Users.Where(u => u.Id == user.Id).FirstOrDefault();
-           
+
             if (currentdata == null)
             {
                 return null;
             }
-           try
+            try
             {
                 _context.Entry(currentdata).CurrentValues.SetValues(user);
                 _context.SaveChangesAsync();
@@ -60,18 +60,19 @@ namespace Dal.Data
             catch (Exception)
             {
                 return false;
-            } 
+            }
 
             return true;
         }
 
-        public bool Delete (UsersEntities user) {
+        public bool Delete(UsersEntities user)
+        {
             try
             {
                 _context.Remove(user);
                 _context.SaveChangesAsync();
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw new Exception("Erreur when delete user ! ");
             }

@@ -60,7 +60,7 @@ namespace IbayApi.Controllers
                 return BadRequest();
             }
 
-            return Created("Register ",userCreate);
+            return Created("Register ", userCreate);
         }
 
         /// <summary>
@@ -131,8 +131,9 @@ namespace IbayApi.Controllers
 
             try
             {
-               var userUpdated = _BLL.Update(user);
-                if (userUpdated == null) {
+                var userUpdated = _BLL.Update(user);
+                if (userUpdated == null)
+                {
                     return NotFound("Veuillez vérifier votre saisie !");
                 }
             }
@@ -162,7 +163,7 @@ namespace IbayApi.Controllers
 
             int? userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-           
+
             if (userId != id)
             {
                 if (Role.Admin.ToString() != User.FindFirst(ClaimTypes.Role).Value)
@@ -172,10 +173,10 @@ namespace IbayApi.Controllers
             try
             {
 
-              var data =  _BLL.Delete(id);
+                var data = _BLL.Delete(id);
                 if (data == null)
                     return BadRequest("Utilisateur introuvable !");
-                else 
+                else
                     return Ok("Utilisateur supprimé");
             }
             catch (Exception ex)
