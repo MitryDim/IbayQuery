@@ -186,7 +186,7 @@ namespace BLL.Data
                 throw new Exception("Error when delete user");
             }
             
-            userDeleted = new UsersModel { Pseudo = userExist.Pseudo, Email = userExist.Pseudo };
+            userDeleted = new UsersModel { Pseudo = userExist.Pseudo, Email = userExist.Email };
             return userDeleted;
 
         }
