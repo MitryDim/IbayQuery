@@ -35,7 +35,7 @@ class Program
         //await Products_Delete();
 
         // Get All Users
-        Users_GetAll();
+        //Users_GetAll();
 
         // Register an User
         //await Users_Register();
@@ -47,7 +47,7 @@ class Program
         //await Users_Update();
 
         // Delete an User
-        await Users_Delete();
+        //await Users_Delete();
 
 
 
@@ -406,6 +406,41 @@ class Program
 
             if (response.IsSuccessStatusCode)
                 Console.WriteLine($"{id} - Deleted Successfully 👍");
+            else
+                Console.WriteLine("{0}-({1})", (int)response.StatusCode, response.ReasonPhrase);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+        return true;
+    }
+
+
+
+    public static async Task<bool> Carts_Insert()
+    {
+        var form = new MultipartFormDataContent();
+        Console.WriteLine("--------- Add a product on a Cart ---------");
+
+        Console.WriteLine("\n\nProduct Id :");
+        string productId = Console.ReadLine();
+
+        Console.WriteLine("\n\nQuantity :");
+        string quantity = Console.ReadLine();
+
+        form.Add(new StringContent(productId), "productId");
+        form.Add(new StringContent(quantity), "quantity");
+
+        try
+        {
+            HttpResponseMessage response = client.PostAsync($"https://localhost:7140/Carts/Add?productId={productId}&quantity={quantity}", form).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine($"{productId} x {quantity} - Added Successfully 👍");
+            }
             else
                 Console.WriteLine("{0}-({1})", (int)response.StatusCode, response.ReasonPhrase);
         }

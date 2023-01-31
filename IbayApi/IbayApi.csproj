@@ -52,7 +52,6 @@
 
   <ItemGroup>
     <Folder Include="Public\Images\Products\" />
-    <Folder Include="Public\" />
   </ItemGroup>
 
   <PropertyGroup>

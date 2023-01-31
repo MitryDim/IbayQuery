@@ -30,7 +30,7 @@ namespace IbayApi.Controllers
         /// <param name="productId"></param>
         /// <param name="quantity"></param>
         /// <returns></returns>
-        [HttpPost("/add"), Authorize]
+        [HttpPost("Add"), Authorize]
         [ProducesResponseType(201)]
         [ProducesResponseType(401), ProducesResponseType(403), ProducesResponseType(404)]
         [ProducesResponseType(500)]
@@ -76,7 +76,7 @@ namespace IbayApi.Controllers
         /// Get product in cart of the user connected
         /// </summary>
         /// <returns></returns>
-        [HttpGet("/Get"), Authorize]
+        [HttpGet("Get"), Authorize]
         [ProducesResponseType(200)]
         [ProducesResponseType(401), ProducesResponseType(403), ProducesResponseType(404)]
         [ProducesResponseType(500)]
@@ -119,7 +119,7 @@ namespace IbayApi.Controllers
         /// </summary>
         /// <param name="productId"></param>
         /// <returns></returns>
-        [HttpDelete("/RemoveFromCart"), Authorize]
+        [HttpDelete("RemoveFromCart"), Authorize]
         [ProducesResponseType(200)]
         [ProducesResponseType(401), ProducesResponseType(403), ProducesResponseType(404)]
         [ProducesResponseType(500)]
