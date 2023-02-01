@@ -25,6 +25,13 @@ class Program
         Console.WriteLine("\n\nTo Start, Enter your API Token :");
         token = Console.ReadLine();
 
+        if (token != null)
+        {
+            // Set JWT as bearer token in Authorization header
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        }
+
+
         // Add a product
         //await Products_Insert();
 
@@ -53,13 +60,13 @@ class Program
         //await Carts_Insert();
 
         // Get all Carts
-      //  Carts_GetAll();
+        //  Carts_GetAll();
 
         // Delete a product on a Cart
         //await Carts_Delete();
 
         // Add an order
-       await Orders_Insert();
+        await Orders_Insert();
 
         Console.Read();
     }
@@ -131,8 +138,7 @@ class Program
         Console.WriteLine("\n\nAvailable :");
         bool available = bool.Parse(Console.ReadLine());
 
-        // Set JWT as bearer token in Authorization header
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
 
         form.Add(new StringContent(name), "Name");
         form.Add(new StreamContent(File.OpenRead(image)), "Image", Path.GetFileName(image));
