@@ -27,7 +27,7 @@ class Program
 
         while (String.IsNullOrEmpty(token))
         {
-            Console.WriteLine("\n\nTo the token cannot be null:");
+            Console.WriteLine("\n\nThe token cannot be null, try again :");
             token = Console.ReadLine();
 
         }
