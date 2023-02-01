@@ -11,7 +11,8 @@ namespace IbayQuery
         public int UserId { get; set; }
         public string Status { get; set; }
         public List<CartsItems> CartItems { get; set; }
-        public virtual Users User { get; set; }
+
+        public decimal TotalAmount { get; set; }
 
     }
 }

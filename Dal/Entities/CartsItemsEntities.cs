@@ -24,7 +24,7 @@ namespace Dal.Entities
         [JsonIgnore]
         public virtual ProductsEntities Product { get; set; }
 
-
+        [JsonIgnore]
         [ForeignKey("CartId")]
        public virtual CartsEntities Cart { get; set; }
 

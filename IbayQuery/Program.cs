@@ -53,13 +53,13 @@ class Program
         //await Carts_Insert();
 
         // Get all Carts
-        Carts_GetAll();
+      //  Carts_GetAll();
 
         // Delete a product on a Cart
         //await Carts_Delete();
 
         // Add an order
-        //await Orders_Insert();
+       await Orders_Insert();
 
         Console.Read();
     }
@@ -441,16 +441,27 @@ class Program
         {
             // Get all users
             var response = client.GetAsync("https://localhost:7140/Carts").Result;
-            var cartsData = JsonConvert.DeserializeObject<List<Carts>>(response.Content.ReadAsStringAsync().Result);
+            var cartsData = JsonConvert.DeserializeObject<Carts>(response.Content.ReadAsStringAsync().Result);
 
             if (response.IsSuccessStatusCode)
             {
-                Console.WriteLine("\n----------- All Carts ----------- \n");
-                foreach (var cart in cartsData)
+                Console.WriteLine("\n----------- Cart Information ----------- \n");
+
+                Console.WriteLine("totalAmount : " + cartsData.TotalAmount);
+                Console.WriteLine("id : " + cartsData.Id);
+                Console.WriteLine("userId : " + cartsData.UserId);
+                Console.WriteLine("status : " + cartsData.Status);
+
+                foreach (var item in cartsData.CartItems)
                 {
-                    Console.WriteLine($"{cart.CartItems} - {cart.User} - (Id :{cart.Id})");
+                    Console.WriteLine("\n-----------  Product in cart ----------- \n");
+                    Console.WriteLine("id : " + item.Id);
+                    Console.WriteLine("cartId : " + item.CartId);
+                    Console.WriteLine("productId : " + item.ProductId);
+                    Console.WriteLine("quantity : " + item.Quantity);
+                    Console.WriteLine("status : " + item.Status);
+                    Console.WriteLine("\n--------------------------------\n");
                 }
-                Console.WriteLine("\n--------------------------------");
             }
             else
                 Console.WriteLine("{0}-({1})", (int)response.StatusCode, response.ReasonPhrase);
@@ -533,6 +544,9 @@ class Program
 
     public static async Task<bool> Orders_Insert()
     {
+        // Set JWT as bearer token in Authorization header
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
         var form = new MultipartFormDataContent();
         Console.WriteLine("--------- Add an Order ---------");
 
@@ -547,9 +561,9 @@ class Program
         string paymentType = Console.ReadLine();
 
 
-        form.Add(new StringContent(status), "Status");
+        form.Add(new StringContent(status), "status");
         form.Add(new StringContent(totalPrice.ToString()), "TotalPrice");
-        form.Add(new StringContent(paymentType), "Type");
+        form.Add(new StringContent(paymentType), "paymentType");
 
         try
         {

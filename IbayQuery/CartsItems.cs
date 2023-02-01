@@ -12,7 +12,6 @@ namespace IbayQuery
         public int ProductId { get; set; }
         public int Quantity { get; set; }
         public String Status { get; set; }
-        public virtual Carts Cart { get; set; }
         public virtual Products Product { get; set; }
 
 
