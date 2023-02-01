@@ -25,11 +25,15 @@ class Program
         Console.WriteLine("\n\nTo Start, Enter your API Token :");
         token = Console.ReadLine();
 
-        if (token != null)
+        while (String.IsNullOrEmpty(token))
         {
-            // Set JWT as bearer token in Authorization header
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            Console.WriteLine("\n\nTo the token cannot be null:");
+            token = Console.ReadLine();
+
         }
+        // Set JWT as bearer token in Authorization header
+       client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
 
 
         // Add a product
@@ -60,13 +64,13 @@ class Program
         //await Carts_Insert();
 
         // Get all Carts
-        //  Carts_GetAll();
+          Carts_GetAll();
 
         // Delete a product on a Cart
         //await Carts_Delete();
 
         // Add an order
-        await Orders_Insert();
+       // await Orders_Insert();
 
         Console.Read();
     }
@@ -441,16 +445,17 @@ class Program
     public static void Carts_GetAll()
     {
         // Set JWT as bearer token in Authorization header
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         try
         {
             // Get all users
             var response = client.GetAsync("https://localhost:7140/Carts").Result;
-            var cartsData = JsonConvert.DeserializeObject<Carts>(response.Content.ReadAsStringAsync().Result);
+        
 
             if (response.IsSuccessStatusCode)
             {
+                var cartsData = JsonConvert.DeserializeObject<Carts>(response.Content.ReadAsStringAsync().Result);
                 Console.WriteLine("\n----------- Cart Information ----------- \n");
 
                 Console.WriteLine("totalAmount : " + cartsData.TotalAmount);
