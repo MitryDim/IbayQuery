@@ -9,5 +9,6 @@ namespace BLL.Models
 {
     public class OrdersModel : OrdersEntities
     {
+        public int userId { get; set; }
     }
 }

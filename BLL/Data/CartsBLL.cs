@@ -61,12 +61,12 @@ namespace BLL.Data
                     return _DAL.AddToCart(CartExist);
                 }
 
-                var CartItemExist = CartExist.CartItems.FirstOrDefault(ci => ci.ProductId == cart.CartItems[0].ProductId && ci.Status == cart.CartItems[0].Status );
+                var CartItemExist = CartExist.CartItems.FirstOrDefault(ci => ci.ProductId == cart.CartItems.First().ProductId && ci.Status == cart.CartItems.First().Status );
                 
                
                 if (CartItemExist != null)
                 {
-                    CartItemExist.Quantity += cart.CartItems[0].Quantity;
+                    CartItemExist.Quantity += cart.CartItems.First().Quantity;
                   return _DALCartItems.Update(CartItemExist);
                 }
                 else
@@ -74,8 +74,8 @@ namespace BLL.Data
                     CartItemExist = new CartsItemsEntities
                     {
                         CartId = CartExist.Id,
-                        ProductId = cart.CartItems[0].ProductId,
-                        Status = cart.CartItems[0].Status
+                        ProductId = cart.CartItems.First().ProductId,
+                        Status = cart.CartItems.First().Status
                     };
 
                     return _DALCartItems.Insert(CartItemExist);

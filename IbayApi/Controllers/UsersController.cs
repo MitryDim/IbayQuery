@@ -60,7 +60,7 @@ namespace IbayApi.Controllers
                 return BadRequest();
             }
 
-            return Created("Register ", userCreate);
+            return Created("Register", userCreate);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace IbayApi.Controllers
 
             var token = _BLL.Login(userData, _config);
             if (string.IsNullOrEmpty(token))
-                return NotFound("Invalid informations");
+                return NotFound("Erreur d'authentification veuillez verifier les informations saisies");
 
             return Ok(token);
         }
@@ -119,12 +119,12 @@ namespace IbayApi.Controllers
             int? userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
             if (userId == null)
-                return StatusCode(500, "Error when reading id in token information !");
+                return StatusCode(500, "Erreur lors de la récupération du token ! ");
 
             if (userId != id)
             {
                 if (Role.Admin.ToString() != User.FindFirst(ClaimTypes.Role).Value)
-                    return Unauthorized("You don't have permissions to update this person !");
+                    return Unauthorized("Vous n'avez pas les droits de mettre à jour cette personne.");
             }
 
             var user = new UsersModel { Id = id, Pseudo = users.Pseudo, Email = users.Email, Password = users.Password, role = users.role };
@@ -159,7 +159,7 @@ namespace IbayApi.Controllers
             var user = new UsersModel();
 
             if (User.FindFirst(ClaimTypes.NameIdentifier) == null)
-                return StatusCode(500, "Error when reading id in token information !");
+                return StatusCode(500, "Erreur lors de la récupération du token ! ");
 
             int? userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
@@ -167,7 +167,7 @@ namespace IbayApi.Controllers
             if (userId != id)
             {
                 if (Role.Admin.ToString() != User.FindFirst(ClaimTypes.Role).Value)
-                    return Unauthorized("You don't have permissions to delete this person !");
+                    return Unauthorized("Vous n'avez pas les droits pour supprimer cette personne.");
             }
 
             try

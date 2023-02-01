@@ -43,7 +43,10 @@ namespace Dal.Data
 
         public CartsEntities GetCart(int userId)
         {
-            return _context.Carts.Include(c => c.CartItems).ThenInclude(ci => ci.Product).FirstOrDefault(c => c.UserId == userId && c.Status == "In Progress");
+            return _context.Carts//.Join(_context.CartsItems, x => new { cartId = x.Id })
+                .Include(c => c.CartItems)
+               .ThenInclude(c => c.Product).ToList()
+                .FirstOrDefault(c => c.UserId == userId && c.Status == "In Progress");
         }
 
         public bool Update(CartsEntities cart)

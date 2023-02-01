@@ -13,8 +13,8 @@ namespace Dal.Entities
         [Key]
         public int Id { get; set; }
 
-        [ForeignKey("User")]
-        public int UserId { get; set; }
+       // [ForeignKey("User")]
+       // public int UserId { get; set; }
 
         [ForeignKey("Cart")]
         public int CartId { get; set; }
@@ -29,6 +29,6 @@ namespace Dal.Entities
 
         public virtual CartsEntities Cart { get; set; }
 
-        public virtual UsersEntities User { get; set; }
+       // public virtual UsersEntities User { get; set; }
     }
 }

@@ -10,7 +10,10 @@ namespace Dal.Entities
 {
     public class PayementsEntities
     {
-        [Key]
+        private readonly List<string> _validStatuses = new List<string> { "pending", "success", "failed" };
+        private string _status;
+
+       [Key]
         public int Id { get; set; }
 
         [ForeignKey("Order")]
@@ -18,10 +21,22 @@ namespace Dal.Entities
         public string Type { get; set; }
         public decimal Amount { get; set; }
 
-        public string Status { get; set; }
+        public string Status {
+            get
+            {
+                return _status;
+            }
+            set {
+                if (!_validStatuses.Contains(value))
+                    throw new ArgumentException("Le status saisie n'est pas reconnu ! ");
+                _status = value;
+            } 
+        }
 
         public DateTime CreatedAt { get; set; }
 
         public virtual OrdersEntities Order { get; set; }
+
+       
     }
 }

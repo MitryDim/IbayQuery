@@ -42,12 +42,12 @@ namespace IbayApi.Controllers
 
 
             if (userId == null)
-                return StatusCode(500, "Error when reading id in token information !");
+                return StatusCode(500, "Erreur lors de la récupération du token ! ");
 
 
             var newOrder = new OrdersModel
             {
-                UserId = userId,
+                userId = userId,
                 Status = status.ToLower().Trim(),
                 TotalPrice = TotalPrice,
                 Payements = new List<Dal.Entities.PayementsEntities>

@@ -22,25 +22,28 @@ namespace Dal
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<CartsEntities>()
-                .HasOne(c => c.User)
-                .WithOne()
-                .OnDelete(DeleteBehavior.NoAction);
+                .HasOne<UsersEntities>()
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction)
+                .HasForeignKey(c => c.UserId);
+
+                
+
+            modelBuilder.Entity<ProductsEntities>()
+               .HasOne<UsersEntities>()
+               .WithMany()
+               .OnDelete(DeleteBehavior.NoAction)
+               .HasForeignKey(c => c.OwnedId);
+
 
             modelBuilder.Entity<CartsItemsEntities>()
-                .HasOne(c => c.Product)
-                .WithOne()
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<OrdersEntities>()
-                .HasOne(c => c.User)
-                .WithOne()
-                .OnDelete(DeleteBehavior.NoAction);
+                 .HasOne(ci => ci.Cart)
+                 .WithMany(c => c.CartItems)
+                 .HasForeignKey(ci => ci.CartId);
 
 
-            //    modelBuilder.Entity<ProductsEntities>()
-            //        .HasOne(c => c.User)
-            //        .WithOne()
-            //        .OnDelete(DeleteBehavior.NoAction);
+
+
         }
 
     }

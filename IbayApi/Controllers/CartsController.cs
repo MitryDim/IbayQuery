@@ -3,6 +3,7 @@ using Dal;
 using Dal.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Framework;
 using System.Security.Claims;
 
 namespace IbayApi.Controllers
@@ -36,12 +37,12 @@ namespace IbayApi.Controllers
         [ProducesResponseType(500)]
         public IActionResult Add([FromForm] int productId, [FromForm] int quantity)
         {
-            if(productId == 0 || quantity == 0)           
+            if(productId <= 0 || quantity <= 0)           
                 return BadRequest();
             
 
             if (User.FindFirst(ClaimTypes.NameIdentifier) == null)
-                return StatusCode(500, "Error when reading id in token information !");
+                return StatusCode(500, "Erreur lors de la récupération du token ! ");
 
             int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
@@ -50,6 +51,7 @@ namespace IbayApi.Controllers
             {
                 UserId = userId,
                 Status = "In Progress",
+                
                 CartItems = new List<CartsItemsEntities> {
                     new CartsItemsEntities
                     {
@@ -83,7 +85,7 @@ namespace IbayApi.Controllers
         public IActionResult GetCart()
         {
             if (User.FindFirst(ClaimTypes.NameIdentifier) == null)
-                return StatusCode(500, "Error when reading id in token information !");
+                return StatusCode(500, "Erreur lors de la récupération du token ! ");
 
             int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
@@ -127,7 +129,7 @@ namespace IbayApi.Controllers
         {
 
             if (User.FindFirst(ClaimTypes.NameIdentifier) == null)
-                return StatusCode(500, "Error when reading id in token information !");
+                return StatusCode(500, "Erreur lors de la récupération du token ! ");
 
             int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 

@@ -16,7 +16,8 @@ namespace Dal.Entities
         [Key]
         public int Id { get; set; }
 
-        [MaxLength(100)]
+        [MinLength(3)]
+        [MaxLength(200)]
         public string Name { get; set; }
 
         [NotMapped]
@@ -31,11 +32,10 @@ namespace Dal.Entities
 
         public DateTime Added_Hour { get; set; }
 
-        [ForeignKey("User")]
+
         public int OwnedId { get; set; }
 
-        [JsonIgnore]
-        public virtual UsersEntities User { get; set; }
+       
 
 
 

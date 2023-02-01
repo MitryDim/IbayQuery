@@ -10,7 +10,7 @@ namespace Dal.Entities
         [Key]
         public int Id { get; set; }
 
-        [ForeignKey("Cart")]
+
         public int CartId { get; set; }
 
         [ForeignKey("Product")]
@@ -20,10 +20,14 @@ namespace Dal.Entities
 
         public String Status { get; set; }
 
-        [JsonIgnore]
-        public virtual CartsEntities Cart { get; set; }
 
         [JsonIgnore]
         public virtual ProductsEntities Product { get; set; }
+
+
+        [ForeignKey("CartId")]
+       public virtual CartsEntities Cart { get; set; }
+
+
     }
 }
