@@ -76,7 +76,7 @@ namespace IbayApi.Controllers
         /// Get product in cart of the user connected
         /// </summary>
         /// <returns></returns>
-        [HttpGet("Get"), Authorize]
+        [HttpGet, Authorize]
         [ProducesResponseType(200)]
         [ProducesResponseType(401), ProducesResponseType(403), ProducesResponseType(404)]
         [ProducesResponseType(500)]

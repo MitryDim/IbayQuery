@@ -53,13 +53,13 @@ class Program
         //await Carts_Insert();
 
         // Get all Carts
-        //Carts_GetAll();
+        Carts_GetAll();
 
         // Delete a product on a Cart
         //await Carts_Delete();
 
         // Add an order
-        await Orders_Insert();
+        //await Orders_Insert();
 
         Console.Read();
     }
@@ -441,14 +441,14 @@ class Program
         {
             // Get all users
             var response = client.GetAsync("https://localhost:7140/Carts").Result;
-            dynamic cartsData = JsonConvert.DeserializeObject<List<Carts>>(response.Content.ReadAsStringAsync().Result);
+            var cartsData = JsonConvert.DeserializeObject<List<Carts>>(response.Content.ReadAsStringAsync().Result);
 
             if (response.IsSuccessStatusCode)
             {
                 Console.WriteLine("\n----------- All Carts ----------- \n");
-                foreach (var cart in cartsData.CartsItems)
+                foreach (var cart in cartsData)
                 {
-                    Console.WriteLine($"{cart.ProductId} - {cart.Quantity} - (Id :{cart.Id})");
+                    Console.WriteLine($"{cart.CartItems} - {cart.User} - (Id :{cart.Id})");
                 }
                 Console.WriteLine("\n--------------------------------");
             }

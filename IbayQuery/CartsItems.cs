@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IbayQuery
 {
+    [JsonObject]
     public class CartsItems
     {
         public int Id { get; set; }
