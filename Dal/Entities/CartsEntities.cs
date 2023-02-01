@@ -15,23 +15,18 @@ namespace Dal.Entities
 {
     public class CartsEntities
     {
+        
+
         [Key]
         public int Id { get; set; }
 
-        //[ForeignKey("Product")]
-        //public int ProductId { get; set; }
-
-        [ForeignKey("User")]
+    
         public int UserId { get; set; }
 
         public string Status { get; set; }
 
 
-        public List<CartsItemsEntities> CartItems { get; set; }
-
-        //public virtual ProductsEntities Product { get; set; }
-        [JsonIgnore]
-        public virtual UsersEntities User { get; set; }
+        public virtual ICollection<CartsItemsEntities> CartItems { get; set; }
 
 
     }
