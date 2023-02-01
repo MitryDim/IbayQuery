@@ -28,7 +28,7 @@ namespace IbayApi.Controllers
         /// Add an order, containing products in the cart
         /// </summary>
         // POST: Orders
-        [HttpPost]
+        [HttpPost("Add")]
         [Authorize(Roles = "User, Seller, Admin")]
         [ProducesResponseType(typeof(OrdersModel), 201)]
         [ProducesResponseType(401)]

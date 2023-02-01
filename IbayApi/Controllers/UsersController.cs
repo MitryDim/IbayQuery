@@ -35,7 +35,7 @@ namespace IbayApi.Controllers
         /// <param name="user"></param>
         /// <returns></returns>
         [AllowAnonymous]
-        [HttpPost("register")]
+        [HttpPost("Register")]
         [ProducesResponseType(typeof(UsersModel), 201)]
         [ProducesResponseType(401), ProducesResponseType(403), ProducesResponseType(404)]
         [ProducesResponseType(500)]
@@ -69,7 +69,7 @@ namespace IbayApi.Controllers
         /// <param name="users"></param>
         /// <returns>Token</returns>
         [AllowAnonymous]
-        [HttpPost("login")]
+        [HttpPost("Login")]
         [ProducesResponseType(200)]
         [ProducesResponseType(401), ProducesResponseType(403), ProducesResponseType(404)]
         [ProducesResponseType(500)]
@@ -106,7 +106,7 @@ namespace IbayApi.Controllers
         /// <param name="id"></param>
         /// <param name="users"></param>
         /// <returns></returns>
-        [HttpPut("update"), Authorize]
+        [HttpPut("Update"), Authorize]
         [ProducesResponseType(typeof(UsersModel), 200)]
         [ProducesResponseType(401), ProducesResponseType(403), ProducesResponseType(404)]
         [ProducesResponseType(500)]
