@@ -35,12 +35,14 @@ namespace IbayApi.Controllers
         [ProducesResponseType(500)]
         public ActionResult<List<ProductsModel>> GetAll([FromQuery] string sortBy = "Name", int limit = 10, string query = "")
         {
-            return Ok(_BLL.GetAll(sortBy, limit , query));
+            return Ok(_BLL.GetAll(sortBy, limit, query));
         }
 
         /// <summary>
         /// Find an available product by an Id
         /// </summary>
+        /// <param name="id">Id of the product you want to search</param>
+        /// <returns></returns>
         // GET: Product by ID
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ProductsEntities), 200)]
@@ -71,7 +73,7 @@ namespace IbayApi.Controllers
 
             if (product == null)
                 return BadRequest();
-            
+
 
             // get the owner id
             var ownerId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -87,6 +89,9 @@ namespace IbayApi.Controllers
         /// <summary>
         /// Update a product by his Id
         /// </summary>
+        /// <param name="id">Product ID to update</param>
+        /// <param name="product"></param>
+        /// <returns></returns>
         //// PUT: Product/5
         [HttpPut("Update")]
         [Authorize(Roles = "Seller, Admin")]
@@ -118,14 +123,17 @@ namespace IbayApi.Controllers
             var data = _BLL.Update(newProduct);
 
             if (data)
-                return Ok("Mise à jour effectuée !");
+                return Ok("Update completed !");
             // update de notre objet
             return BadRequest();
         }
 
+
         /// <summary>
         /// Delete a product by his Id
         /// </summary>
+        /// <param name="id">Product ID to delete</param>
+        /// <returns></returns>
         // DELETE: Product/5
         [HttpDelete("Delete")]
         [Authorize(Roles = "Seller, Admin")]
@@ -137,7 +145,7 @@ namespace IbayApi.Controllers
         public IActionResult DeleteProduct([FromQuery] int id)
         {
 
-            if(User.FindFirst(ClaimTypes.NameIdentifier) == null || User.FindFirst(ClaimTypes.Role) ==null)
+            if (User.FindFirst(ClaimTypes.NameIdentifier) == null || User.FindFirst(ClaimTypes.Role) == null)
                 return BadRequest();
 
             // get the owner id
@@ -156,9 +164,9 @@ namespace IbayApi.Controllers
 
             var data = _BLL.Delete(id);
             if (data == null)
-                return NotFound("Le produit n'existe pas !");
+                return NotFound("The product does not exist !");
             else if (data.Value)
-                return Ok("Le produit a bien été supprimé !");
+                return Ok("The product has been deleted !");
             // delete de notre objet
             return BadRequest();
 

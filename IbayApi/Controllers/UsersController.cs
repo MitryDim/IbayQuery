@@ -30,6 +30,21 @@ namespace IbayApi.Controllers
 
 
         /// <summary>
+        /// Get all user
+        /// </summary>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(UsersModel), 200)]
+        [ProducesResponseType(401), ProducesResponseType(403), ProducesResponseType(404)]
+        [HttpGet, Authorize(Roles = "Admin")]
+        public ActionResult<List<UsersModel>> GetUser()
+        {
+
+            return Ok(_BLL.GetUsers());
+
+        }
+
+
+        /// <summary>
         /// Register an user
         /// </summary>
         /// <param name="user"></param>
@@ -64,7 +79,7 @@ namespace IbayApi.Controllers
         }
 
         /// <summary>
-        /// Authentification
+        /// Authentication
         /// </summary>
         /// <param name="users"></param>
         /// <returns>Token</returns>
@@ -79,31 +94,15 @@ namespace IbayApi.Controllers
 
             var token = _BLL.Login(userData, _config);
             if (string.IsNullOrEmpty(token))
-                return NotFound("Erreur d'authentification veuillez verifier les informations saisies");
+                return NotFound("Authentication error please check the information entered");
 
             return Ok(token);
         }
 
         /// <summary>
-        /// Get all user
-        /// </summary>
-        /// <returns></returns>
-        [ProducesResponseType(typeof(UsersModel), 200)]
-        [ProducesResponseType(401), ProducesResponseType(403), ProducesResponseType(404)]
-        [HttpGet, Authorize(Roles = "Admin")]
-        public ActionResult<List<UsersModel>> GetUser()
-        {
-
-            return Ok(_BLL.GetUsers());
-
-        }
-
-
-
-        /// <summary>
         /// Update yourself Or update an user if you are admin
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">User ID to update</param>
         /// <param name="users"></param>
         /// <returns></returns>
         [HttpPut("Update"), Authorize]
@@ -119,12 +118,12 @@ namespace IbayApi.Controllers
             int? userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
             if (userId == null)
-                return StatusCode(500, "Erreur lors de la récupération du token ! ");
+                return StatusCode(500, "Error retrieving token ! ");
 
             if (userId != id)
             {
                 if (Role.Admin.ToString() != User.FindFirst(ClaimTypes.Role).Value)
-                    return Unauthorized("Vous n'avez pas les droits de mettre à jour cette personne.");
+                    return Unauthorized("You do not have rights to update this person.");
             }
 
             var user = new UsersModel { Id = id, Pseudo = users.Pseudo, Email = users.Email, Password = users.Password, role = users.role };
@@ -134,7 +133,7 @@ namespace IbayApi.Controllers
                 var userUpdated = _BLL.Update(user);
                 if (userUpdated == null)
                 {
-                    return NotFound("Veuillez vérifier votre saisie !");
+                    return NotFound("Please check your input !");
                 }
             }
             catch (Exception ex)
@@ -148,7 +147,7 @@ namespace IbayApi.Controllers
         /// <summary>
         /// Delete yourself or delete an user if you are admin
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">User ID to delete</param>
         /// <returns></returns>
         [HttpDelete("Delete"), Authorize]
         [ProducesResponseType(typeof(UsersModel), 200)]
@@ -159,7 +158,7 @@ namespace IbayApi.Controllers
             var user = new UsersModel();
 
             if (User.FindFirst(ClaimTypes.NameIdentifier) == null)
-                return StatusCode(500, "Erreur lors de la récupération du token ! ");
+                return StatusCode(500, "Error retrieving token ! ");
 
             int? userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
@@ -167,7 +166,7 @@ namespace IbayApi.Controllers
             if (userId != id)
             {
                 if (Role.Admin.ToString() != User.FindFirst(ClaimTypes.Role).Value)
-                    return Unauthorized("Vous n'avez pas les droits pour supprimer cette personne.");
+                    return Unauthorized("You do not have permission to delete this person.");
             }
 
             try
@@ -175,9 +174,9 @@ namespace IbayApi.Controllers
 
                 var data = _BLL.Delete(id);
                 if (data == null)
-                    return BadRequest("Utilisateur introuvable !");
+                    return BadRequest("User not found !");
                 else
-                    return Ok("Utilisateur supprimé");
+                    return Ok("User deleted");
             }
             catch (Exception ex)
             {
