@@ -16,67 +16,92 @@ class Program
     {
         Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-        // Get All Products
-        Products_GetAll();
 
-        //// Get Product by Id
-        //Products_GetById();
 
-        Console.WriteLine("\n\nTo Start, Enter your API Token :");
-        token = Console.ReadLine();
+
+        // Register an User
+        await Users_Register();
+
+        // Login
+        await Users_Login();
+
 
         while (String.IsNullOrEmpty(token))
         {
-            Console.WriteLine("\n\nThe token cannot be null, try again :");
+            Console.WriteLine("\n\nToken cannot be null please enter one token :");
             token = Console.ReadLine();
 
         }
         // Set JWT as bearer token in Authorization header
        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
+        // Get All Users
+        await Users_GetAll();
+
+        // Update an User
+        await Users_Update();
+
+        // Delete an User
+        await Users_Delete();
+
+
+        // Register an User
+        await Users_Register();
+
+        // Login
+        await Users_Login();
+
+        while (String.IsNullOrEmpty(token))
+        {
+            Console.WriteLine("\n\nToken cannot be null please enter one token :");
+            token = Console.ReadLine();
+
+        }
+
+        // Get All Users
+        await Users_GetAll();
 
 
         // Add a product
-        //await Products_Insert();
+        await Products_Insert();
+
+        // Get All Products
+        await Products_GetAll();
 
         // Update a product
-        //await Products_Update();
+        await Products_Update();
 
-        // Delete a product
-        //await Products_Delete();
+        //// Get Product by Id
+        await Products_GetById();
 
-        // Get All Users
-        //Users_GetAll();
 
-        // Register an User
-        //await Users_Register();
-
-        // Login
-        //await Users_Login();
-
-        // Update an User
-        //await Users_Update();
-
-        // Delete an User
-        //await Users_Delete();
 
         // Add product on a Cart
-        //await Carts_Insert();
+        await Carts_Insert();
 
         // Get all Carts
-          Carts_GetAll();
+        await Carts_GetAll();
 
-        // Delete a product on a Cart
-        //await Carts_Delete();
 
         // Add an order
-       // await Orders_Insert();
+        await Orders_Insert();
+
+
+        // Add product on a Cart
+        await Carts_Insert();
+
+        // Delete a product on a Cart
+        await Carts_Delete();
+
+        // Delete a product
+        await Products_Delete();
+
 
         Console.Read();
     }
 
 
-    public static void Products_GetAll()
+    public static async Task<bool> Products_GetAll()
     {
 
 
@@ -97,10 +122,12 @@ class Program
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
+            return false;
         }
+        return true;
 
     }
-    public static void Products_GetById()
+    public static async Task<bool> Products_GetById()
     {
         Console.WriteLine("\n\nPut the Id of the product you want to see :");
         int id = int.Parse(Console.ReadLine());
@@ -121,7 +148,9 @@ class Program
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
+            return false;
         }
+        return true;
 
     }
     // CHECK VALIDATION READLINE A FAIRE
@@ -247,10 +276,10 @@ class Program
     //////////////////////////////////// USERS
     ///
 
-    public static void Users_GetAll()
+    public static async Task<bool> Users_GetAll()
     {
         // Set JWT as bearer token in Authorization header
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+       // client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         try
         {        
@@ -274,8 +303,9 @@ class Program
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
+            return false;
         }
-
+        return true;
     }
 
     public static async Task<bool> Users_Register()
@@ -442,7 +472,7 @@ class Program
     ///
 
 
-    public static void Carts_GetAll()
+    public static async Task<bool> Carts_GetAll()
     {
         // Set JWT as bearer token in Authorization header
         //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -481,7 +511,9 @@ class Program
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
+            return false;
         }
+        return true;
 
     }
 

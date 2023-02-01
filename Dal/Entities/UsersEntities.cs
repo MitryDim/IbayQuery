@@ -4,8 +4,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dal.Entities
 {
+
     public enum Role
     {
+
         User = 0,
         Seller = 1,
         Admin = 2,
@@ -18,7 +20,7 @@ namespace Dal.Entities
         public int Id { get; set; }
 
         [EmailAddress]
-        [Required] 
+        [Required]
         public string Email { get; set; }
 
         [MaxLength(100)]
@@ -30,9 +32,6 @@ namespace Dal.Entities
 
 
         public Role role { get; set; }
-        
-
-        
 
     }
 }

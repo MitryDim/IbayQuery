@@ -1,8 +1,10 @@
 ﻿using BLL.Data;
 using BLL.Models;
 using Dal;
+using IbayApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 
 namespace IbayApi.Controllers
@@ -35,39 +37,36 @@ namespace IbayApi.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public IActionResult PostOrders([FromForm] string paymentType, string status, decimal TotalPrice)
+        public IActionResult PostOrders([FromForm] OrderInput order)
         {
 
             int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
 
             if (userId == null)
-                return StatusCode(500, "Erreur lors de la récupération du token ! ");
+                return StatusCode(500, "Error retrieving token ! ");
 
 
             var newOrder = new OrdersModel
             {
                 userId = userId,
-                Status = status.ToLower().Trim(),
-                TotalPrice = TotalPrice,
+                Status = order.status.ToLower().Trim(),
+                TotalPrice = order.TotalPrice,
                 Payements = new List<Dal.Entities.PayementsEntities>
                 {
                     new Dal.Entities.PayementsEntities
                     {
-                        Amount= TotalPrice,
-                        Type = paymentType.ToLower().Trim()
+                        Amount= order.TotalPrice,
+                        Type =  order.paymentType.ToLower().Trim()
                     }
                 }
             };
 
             var data = _BLL.Insert(newOrder);
             if (data)
-                return Created(("ProceedOrder"), "La commande a bien été effectuée");
+                return Created(("ProceedOrder"), "The order has been made");
 
             return BadRequest();
-
-            // insertion de notre objet
-
         }
     }
 
