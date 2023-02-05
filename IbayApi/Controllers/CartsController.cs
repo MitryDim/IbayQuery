@@ -13,14 +13,14 @@ namespace IbayApi.Controllers
     public class CartsController : ControllerBase
     {
         private BLL.Data.CartsBLL _BLLCart;
-        private BLL.Data.Users _BLLUser;
+        private BLL.Data.UsersBLL _BLLUser;
         private BLL.Data.ProductsBLL _BLLProduct;
 
         public CartsController(DatabaseContext context)
         {
 
             _BLLCart = new BLL.Data.CartsBLL(context);
-            _BLLUser = new BLL.Data.Users(context);
+            _BLLUser = new BLL.Data.UsersBLL(context);
             _BLLProduct = new BLL.Data.ProductsBLL(context);
         }
 

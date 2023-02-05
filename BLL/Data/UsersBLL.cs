@@ -17,17 +17,17 @@ using DevOne.Security.Cryptography.BCrypt;
 
 namespace BLL.Data
 {
-    public class Users
+    public class UsersBLL
     {
 
-        private Dal.Data.Users _DAL;
+        private Dal.Data.UsersDAL _DAL;
         private Mapper _UserMapper;
 
 
-        public Users(DatabaseContext context)
+        public UsersBLL(DatabaseContext context)
         {
 
-            _DAL = new Dal.Data.Users(context);
+            _DAL = new Dal.Data.UsersDAL(context);
             var _configUser = new MapperConfiguration(cfg => cfg.CreateMap<UsersEntities, UsersModel>().ReverseMap());
             _UserMapper = new Mapper(_configUser);
 

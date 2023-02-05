@@ -18,13 +18,13 @@ namespace IbayApi.Controllers
     public class UsersController : ControllerBase
     {
 
-        private BLL.Data.Users _BLL;
+        private BLL.Data.UsersBLL _BLL;
         private IConfiguration _config;
 
         public UsersController(DatabaseContext context, IConfiguration config)
         {
 
-            _BLL = new BLL.Data.Users(context);
+            _BLL = new BLL.Data.UsersBLL(context);
             _config = config;
         }
 
