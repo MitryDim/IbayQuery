@@ -29,16 +29,15 @@ De plus, vous devez créer une application console .net simple pour interroger l
 
 # Installation
 
-## 1. Clonez le dépôt ou téléchargez-le en .zip
+## 1. Cloner le dépôt ou téléchargez-le en .zip
 
 ```
 git clone https://github.com/MitryDim/IbayQuery.git
 ```
-
-## 2. Ouvrez le fichier IbayQuery.sln.
+## 2. Ouvrer le fichier IbayQuery.sln.
 >Vous devez possèdez la Version 2022 de Visual Studio pour avoir l'infrastructure .NET 7.0.
 
-## 3. Créez une base de données avec SQL Server.
+## 3. Création d'une base de données avec SQL Server.
 >Il est possible de passer directement par Visual Studio en utilisant l'onglet Affichage => Explorateur d'objets SQL Server.
 
 Nommez la comme bon vous semble, cependant il est recommandé de la nommez **IBay**
@@ -91,7 +90,7 @@ Normalement, après une actualisation dans l'Explorateur d'objets SQL Server, vo
 
 # Lancement de la Solution
 
-Afin d'utilisez l'Application Console, vous devriez au préalable démarrer le Projet IbayApi en **https**
+Afin d'utilisez l'Application Console, vous devriez au préalable démarrer le Projet IbayApi en **https**.
 
 ![Launch](https://image.noelshack.com/fichiers/2023/05/3/1675289075-capture-d-ecran-2023-02-01-230353.png)
 
@@ -100,6 +99,9 @@ Afin d'utilisez l'Application Console, vous devriez au préalable démarrer le P
 
 
 
+# Schéma de la Base de Données :
+
+![SchemaBDD](https://image.noelshack.com/fichiers/2023/06/1/1675719410-image.png)
 
 
 
