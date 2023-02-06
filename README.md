@@ -40,9 +40,19 @@ git clone https://github.com/MitryDim/IbayQuery.git
 ## 3. Création d'une base de données avec SQL Server.
 >Il est possible de passer directement par Visual Studio en utilisant l'onglet Affichage => Explorateur d'objets SQL Server.
 
-Nommez la comme bon vous semble, cependant il est recommandé de la nommez **IBay**
 
-![SQL SERVER](https://i.stack.imgur.com/2oYMj.jpg)
+Afin de créer la base de données, il vous suffit de faire un **Clique Droit** sur le dossier **Bases de données** et ensuite, cliquer sur **Ajouter une nouvelle base de données**
+
+![SQL SERVER](https://zupimages.net/up/23/06/b7wn.png)
+
+
+Nommez la comme bon vous semble, cependant il est recommandé de la nommez **IBay**.
+
+![SQL SERVER](https://zupimages.net/up/23/06/p62t.png)
+
+Voila, votre Base de Données à été créer avec Succés.
+
+![SQL SERVER](https://zupimages.net/up/23/06/z5mj.png)
 
 ## 4. Ajout des tables dans la base de données.
 Tout d'abord, ouvrez le fichier IbayApi/**appsettings.json** et remplacez la Data Source de DBConnection par la votre.
@@ -92,7 +102,7 @@ Normalement, après une actualisation dans l'Explorateur d'objets SQL Server, vo
 
 Afin d'utilisez l'Application Console, vous devriez au préalable démarrer le Projet IbayApi en **https**.
 
-![Launch](https://image.noelshack.com/fichiers/2023/05/3/1675289075-capture-d-ecran-2023-02-01-230353.png)
+![Launch](https://zupimages.net/up/23/06/ebay.png)
 
 
 >Toutes les fonctions de l'Application Console se trouvent dans IbayQuery/**Program.cs**
@@ -101,7 +111,7 @@ Afin d'utilisez l'Application Console, vous devriez au préalable démarrer le P
 
 # Schéma de la Base de Données :
 
-![SchemaBDD](https://image.noelshack.com/fichiers/2023/06/1/1675719410-image.png)
+![SchemaBDD](https://zupimages.net/up/23/06/o49t.png)
 
 
 

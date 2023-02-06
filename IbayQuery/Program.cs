@@ -45,27 +45,27 @@ class Program
        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         // Get All Users
-        await Users_GetAll();
+        //await Users_GetAll();
 
         // Update an User
-        await Users_Update();
+        //await Users_Update();
 
         // Delete an User
-        await Users_Delete();
+        //await Users_Delete();
 
 
         // Register an User
-        await Users_Register();
+        //await Users_Register();
 
         // Login
-        await Users_Login();
+        //await Users_Login();
 
-        while (String.IsNullOrEmpty(token))
-        {
-            Console.WriteLine("\n\nToken cannot be null please enter one token :");
-            token = Console.ReadLine();
+        //while (String.IsNullOrEmpty(token))
+        //{
+        //    Console.WriteLine("\n\nToken cannot be null please enter one token :");
+        //    token = Console.ReadLine();
 
-        }
+        //}
 
         // Get All Users
         await Users_GetAll();
@@ -84,7 +84,6 @@ class Program
         await Products_GetById();
 
 
-
         // Add product on a Cart
         await Carts_Insert();
 
@@ -92,15 +91,19 @@ class Program
         await Carts_GetAll();
 
 
+        // Get All Products
+        await Products_GetAll();
+
+
         // Add an order
         await Orders_Insert();
 
-
-        // Add product on a Cart
-        await Carts_Insert();
-
         // Delete a product on a Cart
         await Carts_Delete();
+
+
+        // Get All Products
+        await Products_GetAll();
 
         // Delete a product
         await Products_Delete();
@@ -150,7 +153,7 @@ class Program
         try
         {
             Console.WriteLine("--------- Get Product by Id --------- \n");
-            Console.WriteLine($"{product.Name} - {product.Price} € - (Id :{product.Id})");
+            Console.WriteLine($"{product.Name} - {product.Price} € - (Id :{product.Id})\n");
 
 
         }
@@ -502,19 +505,19 @@ class Program
                 var cartsData = JsonConvert.DeserializeObject<Carts>(response.Content.ReadAsStringAsync().Result);
                 Console.WriteLine("\n----------- Cart Information ----------- \n");
 
-                Console.WriteLine("totalAmount : " + cartsData.TotalAmount);
-                Console.WriteLine("id : " + cartsData.Id);
-                Console.WriteLine("userId : " + cartsData.UserId);
-                Console.WriteLine("status : " + cartsData.Status);
+                Console.WriteLine("Total Amount : " + cartsData.TotalAmount + " €");
+                Console.WriteLine("Id : " + cartsData.Id);
+                Console.WriteLine("UserId : " + cartsData.UserId);
+                Console.WriteLine("Status : " + cartsData.Status);
 
                 foreach (var item in cartsData.CartItems)
                 {
                     Console.WriteLine("\n-----------  Product in cart ----------- \n");
-                    Console.WriteLine("id : " + item.Id);
-                    Console.WriteLine("cartId : " + item.CartId);
-                    Console.WriteLine("productId : " + item.ProductId);
-                    Console.WriteLine("quantity : " + item.Quantity);
-                    Console.WriteLine("status : " + item.Status);
+                    Console.WriteLine("Id : " + item.Id);
+                    Console.WriteLine("CartId : " + item.CartId);
+                    Console.WriteLine("ProductId : " + item.ProductId);
+                    Console.WriteLine("Quantity : " + item.Quantity);
+                    Console.WriteLine("Status : " + item.Status);
                     Console.WriteLine("\n--------------------------------\n");
                 }
             }
@@ -611,10 +614,10 @@ class Program
         Console.WriteLine("\n\nStatus :");
         string status = Console.ReadLine();
 
-        Console.WriteLine("\n\nTotalPrice :");
+        Console.WriteLine("\n\nTotal Price :");
         decimal totalPrice = decimal.Parse(Console.ReadLine());
 
-        Console.WriteLine("\n\nPaymentType :");
+        Console.WriteLine("\n\nPayment Type :");
         string paymentType = Console.ReadLine();
 
 
