@@ -34,7 +34,6 @@ De plus, vous devez créer une application console .net simple pour interroger l
 ```
 git clone https://github.com/MitryDim/IbayQuery.git
 ```
-
 ## 2. Ouvrez le fichier IbayQuery.sln.
 >Vous devez possèdez la Version 2022 de Visual Studio pour avoir l'infrastructure .NET 7.0.
 
