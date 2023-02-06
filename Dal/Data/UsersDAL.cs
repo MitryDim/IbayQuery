@@ -3,11 +3,11 @@
 
 namespace Dal.Data
 {
-    public class Users
+    public class UsersDAL
     {
         DatabaseContext _context;
 
-        public Users(DatabaseContext context)
+        public UsersDAL(DatabaseContext context)
         {
             _context = context;
         }

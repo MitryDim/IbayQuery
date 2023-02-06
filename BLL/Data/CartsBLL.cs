@@ -20,7 +20,7 @@ namespace BLL.Data
 
 
         private Dal.Data.ProductsDAL _DALProducts;
-        private Dal.Data.Users _DALUsers;
+        private Dal.Data.UsersDAL _DALUsers;
         private CartsItemsDAL _DALCartItems;
 
 
@@ -30,7 +30,7 @@ namespace BLL.Data
         public CartsBLL(DatabaseContext context)
         {
             _DALProducts = new Dal.Data.ProductsDAL(context);
-            _DALUsers = new Dal.Data.Users(context);
+            _DALUsers = new Dal.Data.UsersDAL(context);
             _DAL = new Dal.Data.CartsDAL(context);
             _DALCartItems = new CartsItemsDAL(context);
             var _configUser = new MapperConfiguration(cfg => cfg.CreateMap<CartsEntities, CartsModel>().ReverseMap());

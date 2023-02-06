@@ -46,7 +46,9 @@ Nommez la comme bon vous semble, cependant il est recommandé de la nommez **IBa
 ![SQL SERVER](https://i.stack.imgur.com/2oYMj.jpg)
 
 ## 4. Ajout des tables dans la base de données.
-Tout d'abord, ouvrez le fichier IbayApi/**appsettings.json** et remplacez la Data Source de DBConnection par la votre. Si vous avez choisis votre propre nom de Base de Données, définissez la à la place de ```Initial Catalog= IBay;```
+Tout d'abord, ouvrez le fichier IbayApi/**appsettings.json** et remplacez la Data Source de DBConnection par la votre.
+Example : ```Data Source=(localdb)\MSSQLLocalDB;```.
+Si vous avez choisis votre propre nom de Base de Données, définissez la à la place de ```Initial Catalog= IBay;```.
 
 ```
 "DBConnection": "Data Source=MSI;Initial Catalog=IBay;Integrated Security=True;Trust Server Certificate=True"
