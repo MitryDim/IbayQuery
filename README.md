@@ -100,6 +100,9 @@ Afin d'utilisez l'Application Console, vous devriez au préalable démarrer le P
 
 
 
+# Schéma de la Base de Données :
+
+![SchemaBDD](https://image.noelshack.com/fichiers/2023/06/1/1675719410-image.png)
 
 
 
