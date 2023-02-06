@@ -2,12 +2,18 @@
 using Newtonsoft.Json;
 using IbayQuery;
 using System.Net.Http.Headers;
+using System.Configuration;
+using System.Collections.Specialized;
 
 class Program
 {
+
+    
     // Initialize the HttpClient
     static HttpClient client = new HttpClient();
 
+    static string host = string.Empty;  
+    static string port = string.Empty;
     static string token = string.Empty;
 
     static string newProduct = string.Empty;
@@ -17,7 +23,10 @@ class Program
         Console.OutputEncoding = System.Text.Encoding.UTF8;
 
 
-
+         host = ConfigurationManager.AppSettings.Get("Hostname");
+         port = ConfigurationManager.AppSettings.Get("Port");
+        
+        Console.WriteLine(host+ ":" + port);
 
         // Register an User
         await Users_Register();
@@ -106,7 +115,7 @@ class Program
 
 
         // Get all users
-        var response = client.GetAsync("https://localhost:7140/Products").Result;
+        var response = client.GetAsync("https://"+ host + ":"+port+"/Products").Result;
         var products = JsonConvert.DeserializeObject<List<Products>>(response.Content.ReadAsStringAsync().Result);
 
         try
@@ -133,7 +142,7 @@ class Program
         int id = int.Parse(Console.ReadLine());
 
         // Get all users
-        var response = client.GetAsync($"https://localhost:7140/Products/{id}").Result;
+        var response = client.GetAsync($"https://"+ host + ":"+port+"/Products/{id}").Result;
         var product = JsonConvert.DeserializeObject<Products>(response.Content.ReadAsStringAsync().Result);
 
 
@@ -181,7 +190,7 @@ class Program
 
         try
         {
-            HttpResponseMessage response = client.PostAsync("https://localhost:7140/Products/Add", form).Result;
+            HttpResponseMessage response = client.PostAsync("https://"+ host + ":"+port+"/Products/Add", form).Result;
 
             if (response.IsSuccessStatusCode)
                 Console.WriteLine($"{name} - {price} € - Created Successfully 👍");
@@ -227,7 +236,7 @@ class Program
 
         try
         {
-            HttpResponseMessage response = client.PutAsync($"https://localhost:7140/Products/Update/?id={id}", form).Result;
+            HttpResponseMessage response = client.PutAsync($"https://"+ host + ":"+port+"/Products/Update/?id={id}", form).Result;
 
             if (response.IsSuccessStatusCode)
                 Console.WriteLine($"{name} - Updated Successfully 👍");
@@ -257,7 +266,7 @@ class Program
 
         try
         {
-            HttpResponseMessage response = client.DeleteAsync($"https://localhost:7140/Products/Delete/?id={id}").Result;
+            HttpResponseMessage response = client.DeleteAsync($"https://"+ host + ":"+port+"/Products/Delete/?id={id}").Result;
 
             if (response.IsSuccessStatusCode)
                 Console.WriteLine($"{id} - Deleted Successfully 👍");
@@ -284,7 +293,7 @@ class Program
         try
         {        
             // Get all users
-            var response = client.GetAsync("https://localhost:7140/Users").Result;
+            var response = client.GetAsync("https://"+ host + ":"+port+"/Users").Result;
             var users = JsonConvert.DeserializeObject<List<Users>>(response.Content.ReadAsStringAsync().Result);
 
             if (response.IsSuccessStatusCode)
@@ -340,7 +349,7 @@ class Program
 
         try
         {
-            HttpResponseMessage response = client.PostAsync("https://localhost:7140/Users/Register", form).Result;
+            HttpResponseMessage response = client.PostAsync("http://localhost:5000/Users/Register", form).Result;
 
             if (response.IsSuccessStatusCode)
             {
@@ -378,7 +387,7 @@ class Program
 
         try
         {
-            HttpResponseMessage response = client.PostAsync("https://localhost:7140/Users/Login", form).Result;
+            HttpResponseMessage response = client.PostAsync("https://"+ host + ":"+port+"/Users/Login", form).Result;
 
             if (response.IsSuccessStatusCode)
             {
@@ -428,7 +437,7 @@ class Program
 
         try
         {
-            HttpResponseMessage response = client.PutAsync($"https://localhost:7140/Users/Update/?id={id}", form).Result;
+            HttpResponseMessage response = client.PutAsync($"https://"+ host + ":"+port+"/Users/Update/?id={id}", form).Result;
 
             if (response.IsSuccessStatusCode)
                 Console.WriteLine($"{pseudo} - {email} - Updated Successfully 👍");
@@ -457,7 +466,7 @@ class Program
 
         try
         {
-            HttpResponseMessage response = client.DeleteAsync($"https://localhost:7140/Users/Delete/?id={id}").Result;
+            HttpResponseMessage response = client.DeleteAsync($"https://"+ host + ":"+port+"/Users/Delete/?id={id}").Result;
 
             if (response.IsSuccessStatusCode)
                 Console.WriteLine($"{id} - Deleted Successfully 👍");
@@ -485,7 +494,7 @@ class Program
         try
         {
             // Get all users
-            var response = client.GetAsync("https://localhost:7140/Carts").Result;
+            var response = client.GetAsync("https://"+ host + ":"+port+"/Carts").Result;
         
 
             if (response.IsSuccessStatusCode)
@@ -541,7 +550,7 @@ class Program
 
         try
         {
-            HttpResponseMessage response = client.PostAsync($"https://localhost:7140/Carts/Add", form).Result;
+            HttpResponseMessage response = client.PostAsync($"https://"+ host + ":"+port+"/Carts/Add", form).Result;
 
             if (response.IsSuccessStatusCode)
             {
@@ -571,7 +580,7 @@ class Program
 
         try
         {
-            HttpResponseMessage response = client.DeleteAsync($"https://localhost:7140/Carts/RemoveFromCart/?productId={productId}").Result;
+            HttpResponseMessage response = client.DeleteAsync($"https://"+ host + ":"+port+"/Carts/RemoveFromCart/?productId={productId}").Result;
 
             if (response.IsSuccessStatusCode)
                 Console.WriteLine($"Product Id : {productId} - Deleted Successfully 👍");
@@ -615,7 +624,7 @@ class Program
 
         try
         {
-            HttpResponseMessage response = client.PostAsync($"https://localhost:7140/Orders/Add/?status={status}&TotalPrice={totalPrice}", form).Result;
+            HttpResponseMessage response = client.PostAsync($"https://"+ host + ":"+port+"/Orders/Add/?status={status}&TotalPrice={totalPrice}", form).Result;
 
             if (response.IsSuccessStatusCode)
                 Console.WriteLine($"{status} - {totalPrice} € - {paymentType} - Connected Successfully 👍");
