@@ -98,6 +98,23 @@ dotnet tool update --global dotnet-ef
 
 Normalement, après une actualisation dans l'Explorateur d'objets SQL Server, vous devriez voir vos tables dans votre Base de Données.
 
+# Configuration de l'Application Console
+
+
+>Vous pouvez configurer l'application console à partir du fichier IbayQuery/**App.config**.
+>Vérifier à bien mettre les paramètres conrespondant à votre projet API.
+
+```
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+	<appSettings>
+		<add key="Hostname" value="localhost" />
+		<add key="Port" value="5000" />
+	</appSettings>
+</configuration>
+```
+
+
 # Lancement de la Solution
 
 Afin d'utilisez l'Application Console, vous devriez au préalable démarrer le Projet IbayApi en **https**.
