@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
@@ -104,8 +105,17 @@ namespace BLL.Data
             //get the file path
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Public", "Images\\Products", newFileName);
 
-            //open the file stream
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
+
+                if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "Public", "Images\\Products")))
+                {
+                    Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "Public", "Images\\Products"));
+                    Console.WriteLine("Le répertoire a été créé.");
+                }
+
+
+
+                //open the file stream
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
             {
                 //copy the file to the server
                 product.Image.CopyTo(fileStream);
