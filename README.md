@@ -42,7 +42,7 @@ git clone https://github.com/MitryDim/IbayQuery.git
 
 Nommez la comme bon vous semble, cependant il est recommandé de la nommez **IBay**
 
-![SQL SERVER](https://i.stack.imgur.com/2oYMj.jpg)
+![SQL SERVER](https://drive.google.com/file/d/1Yn27Hmbze8kDbUjD9oJg5yQGvjPwqaJJ/view?usp=share_link)
 
 ## 4. Ajout des tables dans la base de données.
 Tout d'abord, ouvrez le fichier IbayApi/**appsettings.json** et remplacez la Data Source de DBConnection par la votre.
@@ -92,7 +92,7 @@ Normalement, après une actualisation dans l'Explorateur d'objets SQL Server, vo
 
 Afin d'utilisez l'Application Console, vous devriez au préalable démarrer le Projet IbayApi en **https**.
 
-![Launch](https://image.noelshack.com/fichiers/2023/05/3/1675289075-capture-d-ecran-2023-02-01-230353.png)
+![Launch](https://drive.google.com/file/d/1nj8GD7u63Jd4cmXxwpf2aUwco985nRTw/view?usp=share_link)
 
 
 >Toutes les fonctions de l'Application Console se trouvent dans IbayQuery/**Program.cs**
