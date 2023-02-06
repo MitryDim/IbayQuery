@@ -343,7 +343,12 @@ class Program
             HttpResponseMessage response = client.PostAsync("https://localhost:7140/Users/Register", form).Result;
 
             if (response.IsSuccessStatusCode)
-                Console.WriteLine($"{pseudo} - {email1} - {role} - Register Successfully 👍");
+            {
+
+                var result = await response.Content.ReadAsStringAsync();
+                var json = JsonConvert.DeserializeObject<Users>(result);
+            Console.WriteLine($"{pseudo} - {email1} - {role} - ID : {json.Id} - Register Successfully 👍");
+            }
             else
                 Console.WriteLine("{0}-({1})", (int)response.StatusCode, response.ReasonPhrase);
         }
@@ -440,7 +445,7 @@ class Program
 
     public static async Task<bool> Users_Delete()
     {
-        Console.WriteLine("--------- Delete a Product ---------");
+        Console.WriteLine("--------- Delete users ---------");
 
         Console.WriteLine("\n\nInsert User Id :");
         int id = int.Parse(Console.ReadLine());
