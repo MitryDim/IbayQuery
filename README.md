@@ -91,7 +91,7 @@ Normalement, après une actualisation dans l'Explorateur d'objets SQL Server, vo
 
 # Lancement de la Solution
 
-Afin d'utilisez l'Application Console, vous devriez au préalable démarrer le Projet IbayApi en **https**
+Afin d'utilisez l'Application Console, vous devriez au préalable démarrer le Projet IbayApi en **https**.
 
 ![Launch](https://image.noelshack.com/fichiers/2023/05/3/1675289075-capture-d-ecran-2023-02-01-230353.png)
 
